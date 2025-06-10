@@ -6,6 +6,9 @@ import { animate, inView } from 'motion'
 import ServiceSection from '@/components/ServiceSection.vue';
 import About from '@/components/About.vue';
 import NewsEvents from '@/components/NewsEvents.vue';
+import Gmaps from '@/components/Gmaps.vue';
+import Contacts from '@/components/Contacts.vue';
+import BarangayOfficials from '@/components/BarangayOfficials.vue';
 
 onMounted(() => {
     // Animate hero section
