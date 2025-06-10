@@ -1,11 +1,13 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import Layout from '@/layouts/Layout.vue';
+import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Welcome">
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    </Head>
+    <Layout>
 
+        <Head title="Welcome" />
+
+
+    </Layout>
 </template>
