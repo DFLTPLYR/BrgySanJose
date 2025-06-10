@@ -18,6 +18,8 @@ Route::get('/contact', function () {
 
 Route::prefix('/services')->group(function (){
     Route::get('/barangay-clearance', [ServiceController::class, 'Barangay'])->name('barangay-clearance');
+    Route::post('/barangay-clearance', [ServiceController::class, 'SubmitClearanceForm'])->name('barangay-clearance-form');
+
     Route::get('/working-clearance', [ServiceController::class, 'Working'])->name('working-clearance');
     Route::get('/water-electrical-permit', [ServiceController::class, 'WaterElectrical'])->name('water-electrical-permit');
     Route::get('/fencing-building-permit', [ServiceController::class, 'FenceBuilding'])->name('fencing-building-permit');
