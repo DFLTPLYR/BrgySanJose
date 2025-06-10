@@ -14,14 +14,6 @@ class ServiceController extends Controller
 
     public function SubmitClearanceForm(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-               'lastName' => 'required|string|max:255',
-           ]);
-           if ($validator->fails()) {
-               return back()
-                   ->withErrors($validator, 'barangayClearanceErrorForm')
-                   ->withInput();
-           }
     }
 
     public function Working(){
