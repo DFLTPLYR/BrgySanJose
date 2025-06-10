@@ -22,12 +22,15 @@ Route::prefix('/services')->group(function (){
     Route::post('/barangay-clearance', [ServiceController::class, 'SubmitClearanceForm'])->name('barangay-clearance-form');
 
     Route::get('/working-clearance', [ServiceController::class, 'Working'])->name('working-clearance');
+
     Route::get('/water-electrical-permit', [ServiceController::class, 'WaterElectrical'])->name('water-electrical-permit');
+    Route::post('/water-electrical-permit', [ServiceController::class, 'SubmitWaterElectricalForm'])->name('water-electrical-permit-form');
 
     Route::get('/fencing-building-permit', [ServiceController::class, 'FenceBuilding'])->name('fencing-building-permit');
     Route::post('/fencing-building-permit', [ServiceController::class, 'SubmitFenceBuildingForm'])->name('fencing-building-permit-form');
 
     Route::get('/business-clearance', [ServiceController::class, 'Business'])->name('business-clearance');
+
     Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
     Route::post('/indigency-clearance', [ServiceController::class, 'SubmitIndigencyForm'])->name('indigency-clearance-form');
 });
