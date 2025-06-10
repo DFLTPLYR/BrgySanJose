@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\ServiceController;
-use App\Http\Requests\TestFormRequest;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,10 +27,6 @@ Route::prefix('/services')->group(function (){
     Route::get('/business-clearance', [ServiceController::class, 'Business'])->name('business-clearance');
     Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
 });
-
-Route::post('/test', function (Request $request) {
-    dd($request->all());
-})->name('test');
 
 
 require __DIR__.'/settings.php';

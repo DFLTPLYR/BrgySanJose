@@ -36,20 +36,9 @@ function handleFileUpload(event) {
     form.validId = file
 }
 
-const submit = () => {
-    router.post(route('test'));
-};
-
 </script>
 
 <template>
-
-
-    <button @click="submit">
-        Submit Application
-    </button>
-
-
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col my-4 relative">
         <img src="/images/logo/logomain.png" alt="Barangay Logo" class="w-40 h-40 object-contain mx-auto mb-4" />
         <ReturnHomeButton />
@@ -70,18 +59,26 @@ const submit = () => {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-gray-700 mb-1">Last Name
-                                <span v-if="form.errors.lastName">{{ form.errors.lastName }}</span>
+                                <span class="text-red-600 text-xs" v-if="form.errors.lastName">{{ form.errors.lastName
+                                    }}</span>
                             </label>
                             <input v-model="form.lastName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-1">First Name</label>
+                            <label class="block text-gray-700 mb-1">First Name
+                                <span class="text-red-600 text-xs" v-if="form.errors.firstName">{{ form.errors.firstName
+                                    }}</span></label>
                             <input v-model="form.firstName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-1">Middle Name</label>
+                            <label class="block text-gray-700 mb-1">
+                                Middle Name
+                                <span class="text-red-600 text-xs" v-if="form.errors.middleName">{{
+                                    form.errors.middleName
+                                    }}</span>
+                            </label>
                             <input v-model="form.middleName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
@@ -90,21 +87,33 @@ const submit = () => {
 
                 <!-- Provincial Address -->
                 <div>
-                    <h2 class="text-lg font-semibold mb-2">Provincial Address</h2>
+                    <h2 class="text-lg font-semibold mb-2">Provincial Address
+                        <span class="text-red-600 text-xs" v-if="form.errors.provincialAddress">{{
+                            form.errors.provincialAddress
+                            }}</span>
+                    </h2>
                     <input v-model="form.provincialAddress" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                 </div>
 
                 <!-- No. of years in Tagaytay -->
                 <div>
-                    <h2 class="text-lg font-semibold mb-2">No. of Years in Tagaytay</h2>
+                    <h2 class="text-lg font-semibold mb-2">No. of Years in Tagaytay
+                        <span class="text-red-600 text-xs" v-if="form.errors.yearsInTagaytay">{{
+                            form.errors.yearsInTagaytay
+                        }}</span>
+                    </h2>
                     <input v-model="form.yearsInTagaytay" type="number" min="0"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                 </div>
 
                 <!-- Present Address -->
                 <div>
-                    <h2 class="text-lg font-semibold mb-2">Present Address</h2>
+                    <h2 class="text-lg font-semibold mb-2">Present Address
+                        <span class="text-red-600 text-xs" v-if="form.errors.presentAddress">{{
+                            form.errors.presentAddress
+                        }}</span>
+                    </h2>
                     <input v-model="form.presentAddress" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                 </div>
