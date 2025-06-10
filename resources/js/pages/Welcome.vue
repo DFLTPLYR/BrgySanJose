@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue'
 import { animate, inView } from 'motion'
 import ServiceSection from '@/components/ServiceSection.vue';
+import About from '@/components/About.vue';
 
 onMounted(() => {
     // Animate hero section
@@ -76,7 +77,7 @@ onMounted(() => {
             </div>
             <!-- About Section -->
             <div id="about" class="section-animate relative h-full my-8 px-2 sm:px-0">
-                <About />
+                <About/>
             </div>
             <!-- Barangay Officials -->
             <div class="section-animate relative h-full my-8 px-2 sm:px-0">
