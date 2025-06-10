@@ -1,5 +1,5 @@
 <script setup>
-import { useForm, usePage } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     lastName: null,
@@ -28,7 +28,7 @@ const form = useForm({
 });
 
 function submitForm() {
-    form.post(route('barangay-clearance-form'), { preserveScroll: true, errorBag: 'barangayClearanceErrorForm', onError: e => console.log(e), onFinish: () => console.log(usePage().props.errors) });
+    form.post(route('barangay-clearance-form'), { preserveScroll: true, errorBag: 'barangayClearanceErrorForm' });
 }
 
 function handleFileUpload(event) {
