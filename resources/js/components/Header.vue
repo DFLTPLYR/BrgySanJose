@@ -8,12 +8,20 @@ defineProps({
 const emit = defineEmits(['scrollToTop']);
 
 const goToSection = (elementId) => {
-    const element = document.getElementById(elementId)
+    const element = document.getElementById(elementId);
     if (element) {
-        element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-        })
+        // Calculate header height (adjust selector as needed)
+        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+        const offset = headerHeight + 20; // Additional 20px padding
+
+        // Get element's position relative to viewport
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
     }
 }
 </script>
