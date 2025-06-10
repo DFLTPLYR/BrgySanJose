@@ -42,7 +42,6 @@ return new class extends Migration
             $table->string('fatherOccupation')->nullable();
             $table->string('motherName');
             $table->string('motherOccupation')->nullable();
-            $table->string('validIdPath');
             $table->json('additional_data')->nullable();
             $table->timestamps();
         });

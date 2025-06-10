@@ -28,7 +28,6 @@ class Clearance extends Model
         'fatherOccupation',
         'motherName',
         'motherOccupation',
-        'validIdPath',
         'additional_data',
     ];
 

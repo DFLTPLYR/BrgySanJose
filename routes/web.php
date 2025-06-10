@@ -23,7 +23,9 @@ Route::prefix('/services')->group(function (){
 
     Route::get('/working-clearance', [ServiceController::class, 'Working'])->name('working-clearance');
     Route::get('/water-electrical-permit', [ServiceController::class, 'WaterElectrical'])->name('water-electrical-permit');
+
     Route::get('/fencing-building-permit', [ServiceController::class, 'FenceBuilding'])->name('fencing-building-permit');
+    Route::post('/fencing-building-permit', [ServiceController::class, 'SubmitFenceBuildingForm'])->name('fencing-building-permit-form');
     Route::get('/business-clearance', [ServiceController::class, 'Business'])->name('business-clearance');
     Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
 });
