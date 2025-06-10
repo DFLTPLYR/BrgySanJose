@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
     // Clearance
-    public function Barangay(){
+    public function Barangay()
+    {
         return Inertia::render('Services/Barangay');
     }
+
     public function SubmitClearanceForm(Request $request)
     {
         $validated = $request->validateWithBag('barangayClearanceErrorForm', [
@@ -45,8 +45,7 @@ class ServiceController extends Controller
 
         $validIdPath = $request->file('validId')->store('valid_ids', 'public');
 
-
-               // Create the clearance record
+        // Create the clearance record
         Clearance::create([
             'clearance_type' => 'barangay_clearance',
             'firstName' => $validated['firstName'],
@@ -80,10 +79,13 @@ class ServiceController extends Controller
     }
 
     // Working
-    public function Working(){
+    public function Working()
+    {
         return Inertia::render('Services/Working');
     }
-    public function SubmitWorkingForm(Request $request){
+
+    public function SubmitWorkingForm(Request $request)
+    {
         $validated = $request->validateWithBag('workingFormErrorForm', [
             'lastName' => 'required|string|max:100',
             'firstName' => 'required|string|max:100',
@@ -113,7 +115,7 @@ class ServiceController extends Controller
         $presentId = $request->file('presentId')->store('present_Id', 'public');
 
         Clearance::create([
-            'clearance_type' => 'barangay_clearance',
+            'clearance_type' => 'working_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],
@@ -150,20 +152,22 @@ class ServiceController extends Controller
             ";
 
             $message->to('gonzales.johncris01@gmail.com')
-                    ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
-                    ->subject('Clearance Submission with Embedded Files')
-                    ->html($html);
+                ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
+                ->subject('Clearance Submission with Embedded Files')
+                ->html($html);
         });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
     // Bill
-    public function WaterElectrical(){
+    public function WaterElectrical()
+    {
         return Inertia::render('Services/WaterElectrical');
     }
 
-    public function SubmitWaterElectricalForm(Request $request) {
+    public function SubmitWaterElectricalForm(Request $request)
+    {
         $validated = $request->validateWithBag('waterElectricalErrorForm', [
             'lastName' => 'required|string|max:100',
             'firstName' => 'required|string|max:100',
@@ -194,7 +198,7 @@ class ServiceController extends Controller
         $latestPicture = $request->file('latestPicture')->store('latest_photos', 'public');
 
         Clearance::create([
-            'clearance_type' => 'barangay_clearance',
+            'clearance_type' => 'water_and_electrical_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],
@@ -234,58 +238,60 @@ class ServiceController extends Controller
             ";
 
             $message->to('gonzales.johncris01@gmail.com')
-                    ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
-                    ->subject('Clearance Submission with Embedded Files')
-                    ->html($html);
+                ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
+                ->subject('Clearance Submission with Embedded Files')
+                ->html($html);
         });
 
-         return back()->with('success', 'Barangay clearance submitted successfully.');
+        return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
     // Fencing
-    public function FenceBuilding(){
+    public function FenceBuilding()
+    {
         return Inertia::render('Services/FenceBuilding');
     }
 
-    public function SubmitFenceBuildingForm(Request $request){
-        $validated = $request->validateWithBag('fenceBuildingErrorForm', [
-            'lastName' => 'required|string|max:100',
-            'firstName' => 'required|string|max:100',
-            'middleName' => 'required|string|max:100',
-            'provincialAddress' => 'required|string|max:255',
-            'yearsInTagaytay' => 'required|integer|min:0|max:120',
-            'presentAddress' => 'required|string|max:255',
-            'contactNumber' => 'required|numeric|digits_between:7,15',
-            'email' => 'required|email|max:100',
-            'civilStatus' => 'required|string|in:Single,Married,Widowed,Separated',
-            'citizenship' => 'required|string|max:50',
-            'birthdate' => 'required|date|before:-18 years',
-            'birthplace' => 'required|string|max:100',
-            'age' => 'required|integer|min:18|max:120',
-            'personalAppearance' => 'required|boolean',
-            'occupation' => 'required|string|max:100',
-            'companyName' => 'required|string|max:100',
-            'spouseName' => 'nullable|string|max:100',
-            'spouseOccupation' => 'nullable|string|max:100',
-            'fatherName' => 'required|string|max:100',
-            'fatherOccupation' => 'nullable|string|max:100',
-            'motherName' => 'required|string|max:100',
-            'motherOccupation' => 'nullable|string|max:100',
-            'landTitle' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'structureDesign' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'latestPhoto' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'employeeList' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-        ]);
+    public function SubmitFenceBuildingForm(Request $request)
+    {
+        $validated = $request->validateWithBag('fenceBuildingErrorForm',
+            [
+                'lastName' => 'required|string|max:100',
+                'firstName' => 'required|string|max:100',
+                'middleName' => 'required|string|max:100',
+                'provincialAddress' => 'required|string|max:255',
+                'yearsInTagaytay' => 'required|integer|min:0|max:120',
+                'presentAddress' => 'required|string|max:255',
+                'contactNumber' => 'required|numeric|digits_between:7,15',
+                'email' => 'required|email|max:100',
+                'civilStatus' => 'required|string|in:Single,Married,Widowed,Separated',
+                'citizenship' => 'required|string|max:50',
+                'birthdate' => 'required|date|before:-18 years',
+                'birthplace' => 'required|string|max:100',
+                'age' => 'required|integer|min:18|max:120',
+                'personalAppearance' => 'required|boolean',
+                'occupation' => 'required|string|max:100',
+                'companyName' => 'required|string|max:100',
+                'spouseName' => 'nullable|string|max:100',
+                'spouseOccupation' => 'nullable|string|max:100',
+                'fatherName' => 'required|string|max:100',
+                'fatherOccupation' => 'nullable|string|max:100',
+                'motherName' => 'required|string|max:100',
+                'motherOccupation' => 'nullable|string|max:100',
+                'landTitle' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'structureDesign' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'latestPhoto' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+                'employeeList' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            ]);
 
-            $landTitlePath = $request->file('landTitle')->store('land_titles', 'public');
-            $structureDesignPath = $request->file('structureDesign')->store('structure_designs', 'public');
-            $latestPhotoPath = $request->file('latestPhoto')->store('latest_photos', 'public');
-            $employeeListPath = $request->file('employeeList')->store('employee_lists', 'public');
+        $landTitlePath = $request->file('landTitle')->store('land_titles', 'public');
+        $structureDesignPath = $request->file('structureDesign')->store('structure_designs', 'public');
+        $latestPhotoPath = $request->file('latestPhoto')->store('latest_photos', 'public');
+        $employeeListPath = $request->file('employeeList')->store('employee_lists', 'public');
 
-
-               // Create the clearance record
+        // Create the clearance record
         Clearance::create([
-            'clearance_type' => 'barangay_clearance',
+            'clearance_type' => 'fencing_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],
@@ -316,11 +322,11 @@ class ServiceController extends Controller
             ],
         ]);
 
-        Mail::send([], [], function ($message) use ($landTitlePath, $structureDesignPath,$latestPhotoPath,$employeeListPath ) {
+        Mail::send([], [], function ($message) use ($landTitlePath, $structureDesignPath, $latestPhotoPath, $employeeListPath) {
             $landTitleCid = $message->embed(storage_path("app/public/{$landTitlePath}"));
             $latestPhotoCid = $message->embed(storage_path("app/public/{$structureDesignPath}"));
             $structureDesignCid = $message->embed(storage_path("app/public/{$latestPhotoPath}"));
-            $employeeListCid  = $message->embed(storage_path("app/public/{$employeeListPath}"));
+            $employeeListCid = $message->embed(storage_path("app/public/{$employeeListPath}"));
             $html = "
                 <h1>Clearance Submitted</h1>
                 <p>Attached visuals:</p>
@@ -331,23 +337,27 @@ class ServiceController extends Controller
             ";
 
             $message->to('gonzales.johncris01@gmail.com')
-                    ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
-                    ->subject('Clearance Submission with Embedded Files')
-                    ->html($html);
+                ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
+                ->subject('Clearance Submission with Embedded Files')
+                ->html($html);
         });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
-    public function Business(){
+    public function Business()
+    {
         return Inertia::render('Services/Business');
     }
 
     // Indigency
-    public function Indigency(){
+    public function Indigency()
+    {
         return Inertia::render('Services/Indigency');
     }
-    public function SubmitIndigencyForm(Request $request){
+
+    public function SubmitIndigencyForm(Request $request)
+    {
         $validated = $request->validateWithBag('indigencyErrorForm', [
             'lastName' => 'required|string|max:100',
             'firstName' => 'required|string|max:100',
@@ -378,7 +388,7 @@ class ServiceController extends Controller
         $medicalBill = $request->file('medicalBill')->store('medicals', 'public');
 
         Clearance::create([
-            'clearance_type' => 'barangay_clearance',
+            'clearance_type' => 'indigency_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],

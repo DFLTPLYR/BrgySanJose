@@ -18,9 +18,8 @@ return new class extends Migration
                 'business_clearance',
                 'fencing_clearance',
                 'indigency_clearance',
-                'water_clearance',
-                'electrical_clearance',
-                'working_clearance'
+                'water_and_electrical_clearance',
+                'working_clearance',
             ])->default('barangay_clearance');
             $table->string('firstName');
             $table->string('lastName');

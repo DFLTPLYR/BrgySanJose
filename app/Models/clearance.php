@@ -35,5 +35,4 @@ class Clearance extends Model
         'additional_data' => 'array',
         'birthdate' => 'date',
     ];
-
 }

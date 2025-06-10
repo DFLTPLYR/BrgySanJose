@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ServiceController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,7 +16,7 @@ Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
 
-Route::prefix('/services')->group(function (){
+Route::prefix('/services')->group(function () {
     Route::get('/barangay-clearance', [ServiceController::class, 'Barangay'])->name('barangay-clearance');
     Route::post('/barangay-clearance', [ServiceController::class, 'SubmitClearanceForm'])->name('barangay-clearance-form');
 
