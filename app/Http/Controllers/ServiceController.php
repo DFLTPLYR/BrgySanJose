@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\clerance;
+use App\Models\clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -16,52 +16,64 @@ class ServiceController extends Controller
 
     public function SubmitClearanceForm(Request $request)
     {
-        $request->validateWithBag('barangayClearanceErrorForm', [
-                'lastName' => 'required|string|max:100',
-                'firstName' => 'required|string|max:100',
-                'middleName' => 'required|string|max:100',
+        $validated = $request->validateWithBag('barangayClearanceErrorForm', [
+            'lastName' => 'required|string|max:100',
+            'firstName' => 'required|string|max:100',
+            'middleName' => 'required|string|max:100',
+            'provincialAddress' => 'required|string|max:255',
+            'yearsInTagaytay' => 'required|integer|min:0|max:120',
+            'presentAddress' => 'required|string|max:255',
+            'contactNumber' => 'required|numeric|digits_between:7,15',
+            'email' => 'required|email|max:100',
+            'civilStatus' => 'required|string|in:Single,Married,Widowed,Separated',
+            'citizenship' => 'required|string|max:50',
+            'birthdate' => 'required|date|before:-18 years',
+            'birthplace' => 'required|string|max:100',
+            'age' => 'required|integer|min:18|max:120',
+            'personalAppearance' => 'required|boolean',
+            'occupation' => 'required|string|max:100',
+            'companyName' => 'required|string|max:100',
+            'spouseName' => 'nullable|string|max:100',
+            'spouseOccupation' => 'nullable|string|max:100',
+            'fatherName' => 'required|string|max:100',
+            'fatherOccupation' => 'nullable|string|max:100',
+            'motherName' => 'required|string|max:100',
+            'motherOccupation' => 'nullable|string|max:100',
+            'validId' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
 
-                // Address Information
-                'provincialAddress' => 'required|string|max:255',
-                'yearsInTagaytay' => 'required|integer|min:0|max:120',
-                'presentAddress' => 'required|string|max:255',
-
-                // Contact Information
-                'contactNumber' => 'required|numeric|digits_between:7,15',
-                'email' => 'required|email|max:100',
-
-                // Personal Details
-                'civilStatus' => 'required|string|in:Single,Married,Widowed,Separated',
-                'citizenship' => 'required|string|max:50',
-                'birthdate' => 'required|date|before:-18 years',
-                'birthplace' => 'required|string|max:100',
-                'age' => 'required|integer|min:18|max:120',
-                'personalAppearance' => 'required|boolean',
-
-                // Occupation Information
-                'occupation' => 'required|string|max:100',
-                'companyName' => 'required|string|max:100',
-
-                // Family Information
-                'spouseName' => 'nullable|string|max:100',
-                'spouseOccupation' => 'nullable|string|max:100',
-                'fatherName' => 'required|string|max:100',
-                'fatherOccupation' => 'nullable|string|max:100',
-                'motherName' => 'required|string|max:100',
-                'motherOccupation' => 'nullable|string|max:100',
-                'validId' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048'
-            ]);
+           $validIdPath = null;
             if ($request->hasFile('validId')) {
-                $file = $request->file('validId');
-
-                if (!Storage::disk('public')->exists('valid_ids')) {
-                    Storage::disk('public')->makeDirectory('valid_ids');
-                }
-                $path = $request->file('validId')->store('valid_ids', 'public');
-
-                $originalName = $file->getClientOriginalName();
+               $validIdPath = $request->file('validId')->store('valid_ids', 'public');
             }
 
+               // Create the clearance record
+        Clearance::create([
+            'clearance_type' => 'barangay_clearance',
+            'firstName' => $validated['firstName'],
+            'lastName' => $validated['lastName'],
+            'middleName' => $validated['middleName'],
+            'provincialAddress' => $validated['provincialAddress'],
+            'yearsInTagaytay' => $validated['yearsInTagaytay'],
+            'presentAddress' => $validated['presentAddress'],
+            'contactNumber' => $validated['contactNumber'],
+            'civilStatus' => $validated['civilStatus'],
+            'citizenship' => $validated['citizenship'],
+            'birthdate' => $validated['birthdate'],
+            'birthplace' => $validated['birthplace'],
+            'age' => $validated['age'],
+            'occupation' => $validated['occupation'],
+            'companyName' => $validated['companyName'],
+            'spouseName' => $validated['spouseName'] ?? null,
+            'spouseOccupation' => $validated['spouseOccupation'] ?? null,
+            'fatherName' => $validated['fatherName'],
+            'fatherOccupation' => $validated['fatherOccupation'] ?? null,
+            'motherName' => $validated['motherName'],
+            'motherOccupation' => $validated['motherOccupation'] ?? null,
+            'validIdPath' => $validIdPath,
+        ]);
+
+        return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
     public function Working(){

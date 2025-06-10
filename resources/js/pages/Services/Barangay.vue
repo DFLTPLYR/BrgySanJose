@@ -28,7 +28,7 @@ const form = useForm({
 });
 
 function submitForm() {
-    form.post(route('barangay-clearance-form'), { preserveScroll: true, errorBag: 'barangayClearanceErrorForm' });
+    form.post(route('barangay-clearance-form'), { preserveScroll: true, errorBag: 'barangayClearanceErrorForm', onError: e => console.log(e), onSuccess: () => form.reset() });
 }
 
 function handleFileUpload(event) {
