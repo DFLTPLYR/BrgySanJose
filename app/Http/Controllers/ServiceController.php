@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -147,6 +148,23 @@ class ServiceController extends Controller
             ],
         ]);
 
+        Mail::send([], [], function ($message) use ($landTitlePath, $latestPicture) {
+            $landTitleCid = $message->embed(storage_path("app/public/{$landTitlePath}"));
+            $latestPhotoCid = $message->embed(storage_path("app/public/{$latestPicture}"));
+
+            $html = "
+                <h1>Clearance Submitted</h1>
+                <p>Attached visuals:</p>
+                <p><strong>Land Title:</strong><br><img src='{$landTitleCid}' style='max-width:500px;'></p>
+                <p><strong>Latest Photo:</strong><br><img src='{$latestPhotoCid}' style='max-width:500px;'></p>
+            ";
+
+            $message->to('gonzales.johncris01@gmail.com')
+                    ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
+                    ->subject('Clearance Submission with Embedded Files')
+                    ->html($html);
+        });
+
          return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
@@ -222,6 +240,26 @@ class ServiceController extends Controller
                 'employeeList' => $employeeListPath,
             ],
         ]);
+
+        Mail::send([], [], function ($message) use ($landTitlePath, $structureDesignPath,$latestPhotoPath,$employeeListPath ) {
+            $landTitleCid = $message->embed(storage_path("app/public/{$landTitlePath}"));
+            $latestPhotoCid = $message->embed(storage_path("app/public/{$structureDesignPath}"));
+            $structureDesignCid = $message->embed(storage_path("app/public/{$latestPhotoPath}"));
+            $employeeListCid  = $message->embed(storage_path("app/public/{$employeeListPath}"));
+            $html = "
+                <h1>Clearance Submitted</h1>
+                <p>Attached visuals:</p>
+                <p><strong>Land Title:</strong><br><img src='{$landTitleCid}' style='max-width:500px;'></p>
+                <p><strong>Latest Photo:</strong><br><img src='{$latestPhotoCid}' style='max-width:500px;'></p>
+                <p><strong>Latest Photo:</strong><br><img src='{$structureDesignCid}' style='max-width:500px;'></p>
+                <p><strong>Latest Photo:</strong><br><img src='{$employeeListCid}' style='max-width:500px;'></p>
+            ";
+
+            $message->to('gonzales.johncris01@gmail.com')
+                    ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
+                    ->subject('Clearance Submission with Embedded Files')
+                    ->html($html);
+        });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }

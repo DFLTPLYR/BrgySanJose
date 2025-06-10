@@ -35,6 +35,5 @@ Route::prefix('/services')->group(function (){
     Route::post('/indigency-clearance', [ServiceController::class, 'SubmitIndigencyForm'])->name('indigency-clearance-form');
 });
 
-
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
