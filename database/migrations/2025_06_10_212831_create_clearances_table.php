@@ -22,6 +22,27 @@ return new class extends Migration
                 'electrical_clearance',
                 'working_clearance'
             ])->default('barangay_clearance');
+            $table->string('firstName');
+            $table->string('lastName');
+            $table->string('middleName');
+            $table->string('provincialAddress');
+            $table->unsignedTinyInteger('yearsInTagaytay');
+            $table->string('presentAddress');
+            $table->string('contactNumber', 20);
+            $table->string('civilStatus');
+            $table->string('citizenship');
+            $table->date('birthdate');
+            $table->string('birthplace');
+            $table->unsignedTinyInteger('age');
+            $table->string('occupation');
+            $table->string('companyName');
+            $table->string('spouseName')->nullable();
+            $table->string('spouseOccupation')->nullable();
+            $table->string('fatherName');
+            $table->string('fatherOccupation')->nullable();
+            $table->string('motherName');
+            $table->string('motherOccupation')->nullable();
+            $table->string('validIdPath');
             $table->json('additional-data')->nullable();
             $table->timestamps();
         });
