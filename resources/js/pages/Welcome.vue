@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref, onMounted } from 'vue'
 import { animate, inView } from 'motion'
+import ServiceSection from '@/components/ServiceSection.vue';
 
 onMounted(() => {
     // Animate hero section

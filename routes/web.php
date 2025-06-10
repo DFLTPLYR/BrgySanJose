@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,6 +15,16 @@ Route::get('/about-us', function () {
 Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
+
+Route::prefix('/services')->group(function (){
+    Route::get('/barangay-clearance', [ServiceController::class, 'Barangay'])->name('barangay-clearance');
+    Route::get('/working-clearance', [ServiceController::class, 'Working'])->name('working-clearance');
+    Route::get('/water-electrical-permit', [ServiceController::class, 'WaterElectrical'])->name('water-electrical-permit');
+    Route::get('/fencing-building-permit', [ServiceController::class, 'FenceBuilding'])->name('fencing-building-permit');
+    Route::get('/business-clearance', [ServiceController::class, 'Business'])->name('business-clearance');
+    Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
+});
+
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
