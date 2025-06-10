@@ -71,6 +71,10 @@ class ServiceController extends Controller
             'motherName' => $validated['motherName'],
             'motherOccupation' => $validated['motherOccupation'] ?? null,
             'validIdPath' => $validIdPath,
+            'additional_data' => [
+                'email' => $validated['email'],
+                'personalAppearance' => $validated['personalAppearance'],
+            ],
         ]);
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
