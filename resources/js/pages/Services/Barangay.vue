@@ -59,14 +59,20 @@ function handleFileUpload(event) {
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-gray-700 mb-1">Last Name
-                                <span class="text-red-600 text-xs" v-if="form.errors.lastName">{{ form.errors.lastName
-                                    }}</span>
+                            <span class="text-xs text-red-400">
+                                    *
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.lastName">{{ form.errors.lastName
+                            }}</span>
                             </label>
                             <input v-model="form.lastName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
                         <div>
                             <label class="block text-gray-700 mb-1">First Name
+                                <span class="text-xs text-red-400">
+                                    *
+                                </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.firstName">{{ form.errors.firstName
                                     }}</span></label>
                             <input v-model="form.firstName" type="text"
@@ -80,7 +86,7 @@ function handleFileUpload(event) {
                                     }}</span>
                             </label>
                             <input v-model="form.middleName" type="text"
-                                class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+                                class="w-full border border-[#0D98BA] rounded px-3 py-2"  />
                         </div>
                     </div>
                 </div>
@@ -88,9 +94,12 @@ function handleFileUpload(event) {
                 <!-- Provincial Address -->
                 <div>
                     <h2 class="text-lg font-semibold mb-2">Provincial Address
+                        <span class="text-xs text-red-400">
+                        *
+                        </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.provincialAddress">{{
-                            form.errors.provincialAddress
-                            }}</span>
+                        form.errors.provincialAddress
+                        }}</span>
                     </h2>
                     <input v-model="form.provincialAddress" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -99,6 +108,9 @@ function handleFileUpload(event) {
                 <!-- No. of years in Tagaytay -->
                 <div>
                     <h2 class="text-lg font-semibold mb-2">No. of Years in Tagaytay
+                        <span class="text-xs text-red-400">
+                                    *
+                            </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.yearsInTagaytay">{{
                             form.errors.yearsInTagaytay
                         }}</span>
@@ -110,6 +122,9 @@ function handleFileUpload(event) {
                 <!-- Present Address -->
                 <div>
                     <h2 class="text-lg font-semibold mb-2">Present Address
+                        <span class="text-xs text-red-400">
+                                    *
+                            </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.presentAddress">{{
                             form.errors.presentAddress
                         }}</span>
@@ -120,7 +135,9 @@ function handleFileUpload(event) {
 
                 <!-- Contact Number -->
                 <div>
-                    <h2 class="text-lg font-semibold mb-2">Contact Number</h2>
+                    <h2 class="text-lg font-semibold mb-2">Contact Number  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                     <input v-model="form.contactNumber" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                 </div>
@@ -128,12 +145,16 @@ function handleFileUpload(event) {
                 <!-- Civil Status & Citizenship -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Civil Status</h2>
+                        <h2 class="text-lg font-semibold mb-2">Civil Status  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.civilStatus" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Citizenship</h2>
+                        <h2 class="text-lg font-semibold mb-2">Citizenship  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.citizenship" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -142,17 +163,23 @@ function handleFileUpload(event) {
                 <!-- Birthdate, Birthplace, Age -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Birthdate</h2>
+                        <h2 class="text-lg font-semibold mb-2">Birthdate  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.birthdate" type="date"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Birthplace</h2>
+                        <h2 class="text-lg font-semibold mb-2">Birthplace  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.birthplace" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Age</h2>
+                        <h2 class="text-lg font-semibold mb-2">Age  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.age" type="number" min="0"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -161,12 +188,16 @@ function handleFileUpload(event) {
                 <!-- Occupation & Company -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Occupation</h2>
+                        <h2 class="text-lg font-semibold mb-2">Occupation  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.occupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Name of Company</h2>
+                        <h2 class="text-lg font-semibold mb-2">Name of Company  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.companyName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -175,12 +206,16 @@ function handleFileUpload(event) {
                 <!-- Spouse -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Name of Spouse</h2>
+                        <h2 class="text-lg font-semibold mb-2">Name of Spouse  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.spouseName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Spouse Occupation</h2>
+                        <h2 class="text-lg font-semibold mb-2">Spouse Occupation  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.spouseOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -189,12 +224,16 @@ function handleFileUpload(event) {
                 <!-- Father -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Father's Name</h2>
+                        <h2 class="text-lg font-semibold mb-2">Father's Name  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.fatherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Father's Occupation</h2>
+                        <h2 class="text-lg font-semibold mb-2">Father's Occupation  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.fatherOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -203,12 +242,16 @@ function handleFileUpload(event) {
                 <!-- Mother -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Mother's Name</h2>
+                        <h2 class="text-lg font-semibold mb-2">Mother's Name  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.motherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Mother's Occupation</h2>
+                        <h2 class="text-lg font-semibold mb-2">Mother's Occupation  <span class="text-xs text-red-400">
+                                    *
+                            </span></h2>
                         <input v-model="form.motherOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -219,14 +262,18 @@ function handleFileUpload(event) {
                     <div>
                         <label class="block text-gray-700 mb-2">
                             <input type="checkbox" v-model="form.personalAppearance" class="mr-2" />
-                            Personal Appearance
+                            Personal Appearance  <span class="text-xs text-red-400">
+                                    *
+                            </span>
 
                         </label>
                     </div>
                     <div>
                         <label class="block text-gray-700 mb-2 font-semibold">
                             <span class="text-base text-white bg-[#0D98BA] px-3 py-1 rounded-lg">Valid ID (Upload a
-                                file)</span>
+                                file)  <span class="text-xs text-red-400">
+                                    *
+                            </span></span>
 
                             <input type="file" accept=".jpg,.jpeg,.png,.pdf" @change="handleFileUpload"
                                 class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
@@ -234,7 +281,9 @@ function handleFileUpload(event) {
                     </div>
                     <div>
                         <label class="block text-gray-700 mb-2">
-                            Email Address
+                            Email Address  <span class="text-xs text-red-400">
+                                    *
+                            </span>
                             <input type="email" v-model="form.email"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2 mt-2"
                                 placeholder="Enter your email" required />
