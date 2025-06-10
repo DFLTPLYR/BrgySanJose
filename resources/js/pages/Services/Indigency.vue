@@ -1,5 +1,322 @@
 <script setup>
+import ReturnHomeButton from '@/assets/components/ReturnHomeButton.vue'
+import { reactive } from 'vue'
+
+const form = reactive({
+  lastName: '',
+  firstName: '',
+  middleName: '',
+  provincialAddress: '',
+  yearsInTagaytay: '',
+  presentAddress: '',
+  contactNumber: '',
+  civilStatus: '',
+  citizenship: '',
+  birthdate: '',
+  birthplace: '',
+  age: '',
+  occupation: '',
+  companyName: '',
+  spouseName: '',
+  spouseOccupation: '',
+  fatherName: '',
+  fatherOccupation: '',
+  motherName: '',
+  motherOccupation: '',
+  medicalAbstract: null,  // added for file
+  medicalBill: null,      // added for file
+  email: '',
+})
+
+function handleFileUpload(event, key) {
+  const file = event.target.files[0]
+  form[key] = file
+}
+
+function submitForm() {
+  // Basic validation including files
+  if (
+    !form.lastName ||
+    !form.firstName ||
+    !form.middleName ||
+    !form.provincialAddress ||
+    !form.yearsInTagaytay ||
+    !form.presentAddress ||
+    !form.contactNumber ||
+    !form.civilStatus ||
+    !form.citizenship ||
+    !form.birthdate ||
+    !form.birthplace ||
+    !form.age ||
+    !form.occupation ||
+    !form.companyName ||
+    !form.spouseName ||
+    !form.spouseOccupation ||
+    !form.fatherName ||
+    !form.fatherOccupation ||
+    !form.motherName ||
+    !form.motherOccupation ||
+    !form.medicalAbstract ||
+    !form.medicalBill ||
+    !form.email
+  ) {
+    alert('Please complete all fields and requirements.')
+    return
+  }
+
+  // Prepare FormData to send files and other data
+  const formData = new FormData()
+  for (const key in form) {
+    formData.append(key, form[key])
+  }
+
+  // Here you would send `formData` to your Laravel backend
+  // e.g., using fetch or axios
+
+  alert('Form submitted successfully!')
+  console.log('Form Data:', form)
+}
 </script>
 
+
 <template>
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col my-4 relative">
+    <img
+    src="/images/logo/logomain.png"
+    alt="Barangay Logo"
+    class="w-40 h-40 object-contain mx-auto mb-4"
+    />
+    <ReturnHomeButton />
+    <div class="text-[#0D98BA] flex items-center justify-center text-2xl font-bold mb-4">
+    Fencing and Building Permit
+    </div>
+    <div>
+    <p class="text-gray-600 mb-6 justify-center flex items-center">
+        Please fill out the form below to apply for a Working Clearance.
+    </p>
+    </div>
+
+    <form @submit.prevent="submitForm" class="space-y-6">
+    <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
+        <!-- Name Section -->
+        <div>
+        <h2 class="text-lg font-semibold mb-2">Name <span class="text-xs text-red-400">
+              *
+            </span></h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+            <label class="block text-gray-700 mb-1">Last Name <span class="text-xs text-red-400">
+              *
+            </span></label>
+            <input v-model="form.lastName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+            </div>
+            <div>
+            <label class="block text-gray-700 mb-1">First Name <span class="text-xs text-red-400">
+              *
+            </span></label>
+            <input v-model="form.firstName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+            </div>
+            <div>
+            <label class="block text-gray-700 mb-1">Middle Name <span class="text-xs text-red-400">
+              *
+            </span></label>
+            <input v-model="form.middleName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+            </div>
+        </div>
+        </div>
+
+        <!-- Provincial Address -->
+        <div>
+        <h2 class="text-lg font-semibold mb-2">Provincial Address <span class="text-xs text-red-400">
+              *
+            </span></h2>
+        <input v-model="form.provincialAddress" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+
+        <!-- No. of years in Tagaytay -->
+        <div>
+        <h2 class="text-lg font-semibold mb-2">No. of Years in Tagaytay <span class="text-xs text-red-400">
+              *
+            </span></h2>
+        <input v-model="form.yearsInTagaytay" type="number" min="0" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+
+        <!-- Present Address -->
+        <div>
+        <h2 class="text-lg font-semibold mb-2">Present Address <span class="text-xs text-red-400">
+              *
+            </span></h2>
+        <input v-model="form.presentAddress" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+
+        <!-- Contact Number -->
+        <div>
+        <h2 class="text-lg font-semibold mb-2">Contact Number <span class="text-xs text-red-400">
+              *
+            </span></h2>
+        <input v-model="form.contactNumber" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+
+        <!-- Civil Status & Citizenship -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Civil Status <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.civilStatus" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Citizenship <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.citizenship" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        </div>
+
+        <!-- Birthdate, Birthplace, Age -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Birthdate <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.birthdate" type="date" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Birthplace <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.birthplace" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Age <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.age" type="number" min="0" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        </div>
+
+        <!--  * & Company -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Occupation <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.occupation" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Name of Company <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.companyName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        </div>
+
+        <!-- Spouse -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Name of Spouse <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.spouseName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Spouse Occupation  <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.spouseOccupation" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        </div>
+
+        <!-- Father -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Father's Name  <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.fatherName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Father's Occupation <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.fatherOccupation" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        </div>
+
+        <!-- Mother -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Mother's Name <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.motherName" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        <div>
+            <h2 class="text-lg font-semibold mb-2">Mother's Occupation <span class="text-xs text-red-400">
+              *
+            </span></h2>
+            <input v-model="form.motherOccupation" type="text" class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
+        </div>
+        </div>
+
+
+        <!-- Requirements -->
+        <div class="space-y-4">
+
+        <div>
+            <label class="block text-gray-700 mb-2 font-semibold">
+            <span class="text-base text-white bg-[#0D98BA] px-3 py-1 rounded-lg">Medical Abstract</span>
+            <input
+                type="file"
+                accept=".jpg,.jpeg,.png,.pdf"
+                @change="(e) => handleFileUpload(e, 'medicalAbstract')"
+                class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer"
+            />
+            </label>
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-2 font-semibold">
+            <span class="text-base text-white bg-[#0D98BA] px-3 py-1 rounded-lg">Medical Bill</span>
+            <input
+                type="file"
+                accept=".jpg,.jpeg,.png,.pdf"
+                @change="(e) => handleFileUpload(e, 'medicalBill')"
+                class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer"
+            />
+            </label>
+        </div>
+        <div>
+            <label class="block text-gray-700 mb-2">
+            Email Address
+            <input
+                type="email"
+                v-model="form.email"
+                class="w-full border border-[#0D98BA] rounded px-3 py-2 mt-2"
+                placeholder="Enter your email"
+                required
+            />
+            </label>
+        </div>
+        </div>
+
+        <div>
+        <button
+            type="submit"
+            class="bg-[#0D98BA] text-white px-4 py-2 rounded hover:bg-[#0A7A9C] flex item-center justify-center ease-in-out duration-300 w-full"
+        >
+            Submit
+        </button>
+        </div>
+    </div>
+    </form>
+
+    <div class="my-8">
+    <p class="text-gray-600 text-sm text-center">
+        Note: Ensure all requirements are met before submitting.
+    </p>
+    <p class="text-gray-600 text-sm text-center">
+        For any issues, please contact the Barangay Office.
+    </p>
+    </div>
+</div>
 </template>
