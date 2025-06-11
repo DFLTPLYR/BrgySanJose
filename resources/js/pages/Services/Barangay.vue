@@ -144,13 +144,23 @@ function handleFileUpload(event) {
 
                 <!-- Civil Status & Citizenship -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <h2 class="text-lg font-semibold mb-2">Civil Status  <span class="text-xs text-red-400">
-                                    *
-                            </span></h2>
-                        <input v-model="form.civilStatus" type="text"
-                            class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
-                    </div>
+
+                <div>
+                    <h2 class="text-lg font-semibold mb-2">
+                    Civil Status
+                    <span class="text-xs text-red-400">*</span>
+                    </h2>
+                    <select
+                    v-model="form.civilStatus"
+                    class="w-full border border-[#0D98BA] rounded px-3 py-2"
+                    required
+                    >
+                    <option value="" disabled>Select status</option>
+                    <option value="Single">Single</option>
+                    <option value="Married">Married</option>
+                    <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
                     <div>
                         <h2 class="text-lg font-semibold mb-2">Citizenship  <span class="text-xs text-red-400">
                                     *
