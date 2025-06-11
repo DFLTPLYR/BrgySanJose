@@ -9,10 +9,7 @@ import NewsEvents from '@/components/NewsEvents.vue';
 import Gmaps from '@/components/Gmaps.vue';
 import Contacts from '@/components/Contacts.vue';
 import BarangayOfficials from '@/components/BarangayOfficials.vue';
-
-
-
-
+import { Link } from '@inertiajs/vue3';
 
 const showHero = ref(true);
 
@@ -55,40 +52,37 @@ onMounted(() => {
                     <img src="/images/logo/UPDATEDTODAY.svg" alt="Tagaytay Background"
                         class="w-full h-full object-cover" style="object-fit: cover;" draggable="false" />
                 </div>
-                <div
-                v-if="showHero"
-                class="hero-content relative z-10 text-center px-4 sm:px-8 py-10 sm:py-16 rounded-2xl sm:rounded-3xl bg-white/20 shadow-2xl border-2 sm:border-4 border-green-600 backdrop-blur-md animate-fade-in max-w-full sm:max-w-2xl md:max-w-3xl mx-2"
-                >
-                <!-- Exit Button -->
-                <button
-                    @click="showHero = false"
-                    class="absolute top-3 right-3 text-green-900 hover:text-red-600 text-2xl font-bold bg-white/70 rounded-full px-2 shadow-md"
-                    aria-label="Close"
-                >
-                    &times;
-                </button>
+                <div v-if="showHero"
+                    class="hero-content relative z-10 text-center px-4 sm:px-8 py-10 sm:py-16 rounded-2xl sm:rounded-3xl bg-white/20 shadow-2xl border-2 sm:border-4 border-green-600 backdrop-blur-md animate-fade-in max-w-full sm:max-w-2xl md:max-w-3xl mx-2">
+                    <!-- Exit Button -->
+                    <button @click="showHero = false"
+                        class="absolute top-3 right-3 text-green-900 hover:text-red-600 text-2xl font-bold bg-white/70 rounded-full px-2 shadow-md"
+                        aria-label="Close">
+                        &times;
+                    </button>
 
-                <!-- Title and Buttons -->
-                <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-green-700 mb-4 drop-shadow-lg tracking-tight">
-                    Welcome to Barangay San Jose
-                </h1>
-                <p class="text-lg sm:text-2xl md:text-3xl text-green-900 font-semibold mb-8 drop-shadow">
-                    Tagaytay City • Team Effort • Team Work
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="#services" @click.prevent="goToSection('services')"
-                    class="bg-green-600 hover:bg-green-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow transition-colors duration-300">
-                    Our Services
-                    </a>
-                    <a href="#contact" @click.prevent="goToSection('contact')"
-                    class="bg-white hover:bg-gray-100 text-green-700 px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow border border-green-600 transition-colors duration-300">
-                    Contact Us
-                    </a>
-                    <a @click="router.push('/login')"
-                    class="bg-white hover:bg-gray-100 text-green-700 px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow border border-green-600 transition-colors duration-300 cursor-pointer">
-                    Official Login
-                    </a>
-                </div>
+                    <!-- Title and Buttons -->
+                    <h1
+                        class="text-3xl sm:text-5xl md:text-6xl font-extrabold text-green-700 mb-4 drop-shadow-lg tracking-tight">
+                        Welcome to Barangay San Jose
+                    </h1>
+                    <p class="text-lg sm:text-2xl md:text-3xl text-green-900 font-semibold mb-8 drop-shadow">
+                        Tagaytay City • Team Effort • Team Work
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#services" @click.prevent="goToSection('services')"
+                            class="bg-green-600 hover:bg-green-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow transition-colors duration-300">
+                            Our Services
+                        </a>
+                        <a href="#contact" @click.prevent="goToSection('contact')"
+                            class="bg-white hover:bg-gray-100 text-green-700 px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow border border-green-600 transition-colors duration-300">
+                            Contact Us
+                        </a>
+                        <Link :href="route('login')"
+                            class="bg-white hover:bg-gray-100 text-green-700 px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow border border-green-600 transition-colors duration-300 cursor-pointer">
+                        Official Login
+                        </Link>
+                    </div>
                 </div>
 
             </div>
@@ -123,11 +117,10 @@ onMounted(() => {
     </Layout>
 </template>
 
-<style >
+<style>
 html,
 body {
-background: linear-gradient(to bottom right, #79cd37, #b6e89c, #3c9cbc);
-min-height: 100%;
+    background: linear-gradient(to bottom right, #79cd37, #b6e89c, #3c9cbc);
+    min-height: 100%;
 }
-
 </style>

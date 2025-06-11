@@ -1,17 +1,17 @@
 <script setup>
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
-import { Home } from 'lucide-vue-next';
-
+import { Link, usePage } from '@inertiajs/vue3';
 defineProps({
     isHome: Boolean
 });
 
-const scrollToTop = () => {
-if (typeof window !== 'undefined') {
+const { props } = usePage();
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+const scrollToTop = () => {
+    if (typeof window !== 'undefined') {
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 };
 
 
@@ -36,7 +36,7 @@ const goToSection = (elementId) => {
 </script>
 
 <template>
-    <header :isHome="true"
+    <header
         class="w-full bg-gradient-to-br from-[#79cd37] via-[#b6e89c] to-[#3c9cbc] shadow-2xl sticky top-0 left-0 right-0 z-50 border-b-4 border-green-600 backdrop-blur-md">
         <nav class="w-full px-4 sm:px-6 lg:px-8">
             <div class="flex h-20 justify-between items-center">
@@ -46,24 +46,18 @@ const goToSection = (elementId) => {
                         class="h-14 w-14 rounded-full border-2 border-green-600 shadow bg-white p-1" />
                     <Link :href="route('home')"
                         class="hidden lg:block text-2xl font-extrabold text-green-800 drop-shadow-lg tracking-wide bg-white/80 px-4 py-2 rounded-lg">
-                        Barangay San Jose Tagaytay City
+                    Barangay San Jose Tagaytay City
                     </Link>
                 </div>
 
                 <!-- Desktop Navigation -->
                 <div class="space-x-4 hidden lg:flex">
-                    <button
-                    v-if="isHome"
-                    @click.prevent="scrollToTop"
-                    class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow"
-                    >
-                    Home
+                    <button v-if="isHome" @click.prevent="scrollToTop"
+                        class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow">
+                        Home
                     </button>
-                    <Link
-                    v-else
-                    :href="route('home')"
-                    class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow"
-                    >
+                    <Link v-else :href="route('home')"
+                        class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow">
                     Home
                     </Link>
                     <a href="#services" @click.prevent="goToSection('services')"
@@ -82,6 +76,10 @@ const goToSection = (elementId) => {
                         class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow">
                         Contact
                     </a>
+                    <h1 v-if="props.auth"
+                        class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow">
+                        {{ props.auth.username }}
+                    </h1>
                 </div>
 
                 <!-- Burger Menu -->
@@ -102,21 +100,14 @@ const goToSection = (elementId) => {
                 <div v-if="mobileMenu"
                     class="lg:hidden absolute top-20 left-0 w-full bg-gradient-to-br from-[#79cd37] via-[#b6e89c] to-[#3c9cbc] shadow-2xl border-b-4 border-green-600 z-40">
                     <div class="flex flex-col items-center py-6 space-y-2">
-                        <button
-                        v-if="isHome"
-                        @click.prevent="handleMobileScrollToTop"
-                        class="w-11/12 text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow text-left"
-                        >
-                        Home
+                        <button v-if="isHome" @click.prevent="handleMobileScrollToTop"
+                            class="w-11/12 text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow text-left">
+                            Home
                         </button>
 
                         <!-- If navigating back to home from a different page -->
-                        <Link
-                        v-else
-                        :href="route('home')"
-                        @click="mobileMenu = false"
-                        class="w-11/12 text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow text-left"
-                        >
+                        <Link v-else :href="route('home')" @click="mobileMenu = false"
+                            class="w-11/12 text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow text-left">
                         Home
                         </Link>
                         <a href="#services" @click.prevent="goToSection('services'); mobileMenu = false"

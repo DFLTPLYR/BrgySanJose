@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ServiceController;
-use App\Models\Clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -10,9 +9,9 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
-Route::get('/log-in', function () {
-    return Inertia::render('LogIn');
-})->name('log-in');
+Route::get('/dashboard', function () {
+    Inertia::render('/Dashboard');
+})->name('dashboard');
 
 Route::post('/sign-in', function (Request $request) {
     $request->validateWithBag('signInErrorBag', [
