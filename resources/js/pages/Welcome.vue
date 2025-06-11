@@ -118,11 +118,3 @@ onMounted(() => {
         </div>
     </Layout>
 </template>
-
-<style>
-html,
-body {
-    background: linear-gradient(to bottom right, #79cd37, #b6e89c, #3c9cbc);
-    min-height: 100%;
-}
-</style>
