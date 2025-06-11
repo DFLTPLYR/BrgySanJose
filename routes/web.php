@@ -3,6 +3,7 @@
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -11,6 +12,12 @@ Route::get('/', function () {
 Route::get('/log-in', function () {
     return Inertia::render('LogIn');
 })->name('log-in');
+
+Route::post('/sign-in', function (Request $request) {
+    $request->validateWithBag('signInErrorBag', [
+        "username" => [],
+    ]);
+})->name('sign-in');
 
 Route::get('/about-us', function () {
     return Inertia::render('AboutUs');
