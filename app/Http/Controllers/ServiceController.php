@@ -13,6 +13,7 @@ class ServiceController extends Controller
     public function Barangay(Request $request)
     {
         $id = $request->query('id');
+
         return Inertia::render('Services/Barangay', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
@@ -80,9 +81,11 @@ class ServiceController extends Controller
     }
 
     // Working
-    public function Working()
+    public function Working(Request $request)
     {
-        return Inertia::render('Services/Working');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/Working', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitWorkingForm(Request $request)
@@ -163,9 +166,11 @@ class ServiceController extends Controller
     }
 
     // Bill
-    public function WaterElectrical()
+    public function WaterElectrical(Request $request)
     {
-        return Inertia::render('Services/WaterElectrical');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/WaterElectrical', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitWaterElectricalForm(Request $request)
@@ -249,9 +254,11 @@ class ServiceController extends Controller
     }
 
     // Fencing
-    public function FenceBuilding()
+    public function FenceBuilding(Request $request)
     {
-        return Inertia::render('Services/FenceBuilding');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/FenceBuilding', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitFenceBuildingForm(Request $request)
@@ -347,14 +354,16 @@ class ServiceController extends Controller
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
-    public function Business()
+    public function Business(Request $request)
     {
         return Inertia::render('BusinessTypes');
     }
 
-    public function BusinessNew()
+    public function BusinessNew(Request $request)
     {
-        return Inertia::render('Services/Business');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/Business', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitFormBusinessNew(Request $request)
@@ -429,9 +438,11 @@ class ServiceController extends Controller
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
-    public function BusinessRenewal()
+    public function BusinessRenewal(Request $request)
     {
-        return Inertia::render('Services/BusinessRenewal');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/BusinessRenewal', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitFormBusinessRenewal(Request $request)
@@ -500,9 +511,11 @@ class ServiceController extends Controller
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
 
-    public function BusinessForRealEstate()
+    public function BusinessForRealEstate(Request $request)
     {
-        return Inertia::render('Services/BusinessForRealEstate');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/BusinessForRealEstate', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitFormBusinessForRealEstate(Request $request)
@@ -572,9 +585,11 @@ class ServiceController extends Controller
     }
 
     // Indigency
-    public function Indigency()
+    public function Indigency(Request $request)
     {
-        return Inertia::render('Services/Indigency');
+        $id = $request->query('id');
+
+        return Inertia::render('Services/Indigency', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitIndigencyForm(Request $request)

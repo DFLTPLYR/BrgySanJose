@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Clearance;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', ['Clearance' => Clearance::all()]);
