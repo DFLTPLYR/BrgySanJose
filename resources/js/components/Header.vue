@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from 'vue';
+import Swal from 'sweetalert2'
+
 import { Link, router, usePage } from '@inertiajs/vue3';
 defineProps({
     isHome: Boolean
@@ -33,8 +35,20 @@ const goToSection = (elementId) => {
     }
 };
 
+
+
 function signOut() {
-    router.post(route('logout'), {}, { onFinish: () => location.reload() })
+    router.post(route('logout'), {}, {
+        onFinish: () => Swal.fire({
+            title: "Logging out!",
+            toast: true,
+            timer: 1000,
+            timerProgressBar: true,
+            position: "top-right"
+        }).then(() => {
+            location.reload()
+        })
+    });
 }
 
 
