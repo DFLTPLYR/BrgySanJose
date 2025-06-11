@@ -404,7 +404,7 @@ class ServiceController extends Controller
         $listEmployee = $request->file('listEmployee')->store('listEmployee', 'public');
 
         Clearance::create([
-            'clearance_type' => 'indigency_clearance',
+            'clearance_type' => 'business_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],
@@ -432,6 +432,7 @@ class ServiceController extends Controller
                 'contractLease' => $contractLease,
                 'sketchBusiness' => $sketchBusiness,
                 'listEmployee' => $listEmployee,
+                'business_clearance_type' => 'new',
             ],
         ]);
 
@@ -479,7 +480,7 @@ class ServiceController extends Controller
         $financialState = $request->file('financialState')->store('financialState', 'public');
 
         Clearance::create([
-            'clearance_type' => 'indigency_clearance',
+            'clearance_type' => 'business_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],
@@ -505,6 +506,7 @@ class ServiceController extends Controller
                 'latestPhoto' => $latestPhoto,
                 'financialState' => $financialState,
                 'priorYear' => $priorYear,
+                'business_clearance_type' => 'renewal',
             ],
         ]);
 
@@ -552,7 +554,7 @@ class ServiceController extends Controller
         $financialState = $request->file('contractLease')->store('contractLease', 'public');
 
         Clearance::create([
-            'clearance_type' => 'indigency_clearance',
+            'clearance_type' => 'business_clearance',
             'firstName' => $validated['firstName'],
             'lastName' => $validated['lastName'],
             'middleName' => $validated['middleName'],
@@ -578,6 +580,7 @@ class ServiceController extends Controller
                 'latestPhoto' => $latestPhoto,
                 'priorYear' => $priorYear,
                 'sketchBusiness' => $financialState,
+                'business_clearance_type' => 'RealEstate',
             ],
         ]);
 

@@ -329,7 +329,7 @@ function submitForm() {
                                     form.errors.latestPhoto
                                 }}</span></span>
 
-                            <input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                            <input type="file" accept=".jpg,.jpeg,.png,.pdf" :disabled="form.id"
                                 @change="(e) => handleFileUpload(e, 'latestPhoto')"
                                 class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
                             <label class="block text-gray-700 mb-2 font-semibold mt-2">
@@ -342,7 +342,7 @@ function submitForm() {
                                     }}</span>
 
                                 </span>
-                                <input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" :disabled="form.id"
                                     @change="(e) => handleFileUpload(e, 'dtiSec')"
                                     class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
                                 <label class="block text-gray-700 mb-2 font-semibold mt-2">
@@ -353,7 +353,7 @@ function submitForm() {
                                         <span class="text-red-600 text-xs" v-if="form.errors.contractLease">{{
                                             form.errors.contractLease
                                         }}</span></span>
-                                    <input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                                    <input type="file" accept=".jpg,.jpeg,.png,.pdf" :disabled="form.id"
                                         @change="(e) => handleFileUpload(e, 'contractLease')"
                                         class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
                                     <label class="block text-gray-700 mb-2 font-semibold mt-2">
@@ -366,7 +366,7 @@ function submitForm() {
                                             }}</span>
                                         </span>
 
-                                        <input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                                        <input type="file" accept=".jpg,.jpeg,.png,.pdf" :disabled="form.id"
                                             @change="(e) => handleFileUpload(e, 'sketchBusiness')"
                                             class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
                                         <label class="block text-gray-700 mb-2 font-semibold mt-2">
@@ -378,7 +378,7 @@ function submitForm() {
                                                     form.errors.listEmployee
                                                 }}</span>
                                             </span>
-                                            <input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                                            <input type="file" accept=".jpg,.jpeg,.png,.pdf" :disabled="form.id"
                                                 @change="(e) => handleFileUpload(e, 'listEmployee')"
                                                 class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
                                         </label>

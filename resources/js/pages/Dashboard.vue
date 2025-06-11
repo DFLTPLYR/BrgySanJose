@@ -57,11 +57,21 @@ const sortedClearances = computed(() => {
             case 'barangay_clearance':
                 route = 'barangay-clearance';
                 break;
-            case 'indigency':
-                route = 'indigency';
-                break;
-            case 'residency':
-                route = 'residency';
+            case 'business_clearance':
+                const businessType = paper.additional_data?.business_clearance_type?.toLowerCase();
+                switch (businessType) {
+                    case 'new':
+                        route = 'business-clearance-new';
+                        break;
+                    case 'renewal':
+                        route = 'business-clearance-renewal';
+                        break;
+                    case 'realestate':
+                        route = 'business-clearance-forrealestate';
+                        break;
+                    default:
+                        route = 'business-clearance';
+                }
                 break;
             default:
                 route = null;
