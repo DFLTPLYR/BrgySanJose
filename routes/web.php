@@ -34,10 +34,17 @@ Route::prefix('/services')->group(function () {
     Route::post('/fencing-building-permit', [ServiceController::class, 'SubmitFenceBuildingForm'])->name('fencing-building-permit-form');
 
     Route::prefix('/business-clearance')->group(function () {
+        // index
         Route::get('/', [ServiceController::class, 'Business'])->name('business-clearance');
-        Route::get('-new', [ServiceController::class, 'Business-new'])->name('business-clearance-new');
-        Route::get('-renewal', [ServiceController::class, 'Business-renewal'])->name('business-clearance-renewal');
-        Route::get('-forRealEstate', [ServiceController::class, 'Business-forRealEstate'])->name('business-clearance-forRealEstate');
+        // new clearance
+        Route::get('-new', [ServiceController::class, 'BusinessNew'])->name('business-clearance-new');
+        Route::post('-new', [ServiceController::class, 'SubmitFormBusinessNew'])->name('submit-business-clearance-new');
+        // renewal
+        Route::get('-renewal', [ServiceController::class, 'BusinessRenewal'])->name('business-clearance-renewal');
+        Route::post('-renewal', [ServiceController::class, 'SubmitFormBusinessRenewal'])->name('submit-business-clearance-renewal');
+        // real estate
+        Route::get('-forRealEstate', [ServiceController::class, 'BusinessForRealEstate'])->name('business-clearance-forrealestate');
+        Route::post('-forRealEstate', [ServiceController::class, 'SubmitFormBusinessForRealEstate'])->name('submit-business-clearance-forrealestate');
     });
 
     Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
