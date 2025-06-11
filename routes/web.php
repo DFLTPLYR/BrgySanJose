@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\ServiceController;
 use App\Models\Clearance;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -16,7 +16,7 @@ Route::get('/log-in', function () {
 
 Route::post('/sign-in', function (Request $request) {
     $request->validateWithBag('signInErrorBag', [
-        "username" => [],
+        'username' => [],
     ]);
 })->name('sign-in');
 
