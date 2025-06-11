@@ -14,7 +14,7 @@ const isHome = computed(() => { return page.url === "/" })
         <Header :is-home="isHome" />
 
 
-        <main class="flex-grow">
+        <main class="flex-grow flex">
             <slot />
         </main>
 

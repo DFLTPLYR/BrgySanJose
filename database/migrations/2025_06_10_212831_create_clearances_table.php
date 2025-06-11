@@ -42,6 +42,11 @@ return new class extends Migration
             $table->string('motherName');
             $table->string('motherOccupation')->nullable();
             $table->json('additional_data')->nullable();
+            $table->enum('status', [
+                'Completed',
+                'Pending',
+                'Reject',
+            ])->default('Pending');
             $table->timestamps();
         });
     }

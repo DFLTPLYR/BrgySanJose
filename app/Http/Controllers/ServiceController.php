@@ -10,9 +10,10 @@ use Inertia\Inertia;
 class ServiceController extends Controller
 {
     // Clearance
-    public function Barangay()
+    public function Barangay(Request $request)
     {
-        return Inertia::render('Services/Barangay');
+        $id = $request->query('id');
+        return Inertia::render('Services/Barangay', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
     public function SubmitClearanceForm(Request $request)

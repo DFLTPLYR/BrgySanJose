@@ -1,7 +1,16 @@
 <script setup>
 import { router, useForm } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
+
+const props = defineProps({
+    clearanceForm: {
+        type: Object,
+        required: false
+    }
+});
 
 const form = useForm({
+    id: null,
     lastName: null,
     firstName: null,
     middleName: null,
@@ -36,10 +45,17 @@ function handleFileUpload(event) {
     form.validId = file
 }
 
+onMounted(() => {
+    if (props.clearanceForm) {
+        form.defaults(props.clearanceForm);
+        Object.assign(form, props.clearanceForm);
+    }
+});
+
 </script>
 
 <template>
-     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col my-4 relative">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col my-4 relative">
         <img src="/images/logo/logomain.png" alt="Barangay Logo" class="w-40 h-40 object-contain mx-auto mb-4" />
         <ReturnHomeButton />
         <div class="text-[#0D98BA] flex items-center justify-center text-2xl font-bold mb-4">
@@ -142,21 +158,18 @@ function handleFileUpload(event) {
                 <!-- Civil Status & Citizenship -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                    <h2 class="text-lg font-semibold mb-2">
-                    Civil Status
-                    <span class="text-xs text-red-400">*</span>
-                    </h2>
-                    <select
-                    v-model="form.civilStatus"
-                    class="w-full border border-[#0D98BA] rounded px-3 py-2"
-                    required
-                    >
-                    <option value="" disabled>Select status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                    </select>
-                </div>
+                        <h2 class="text-lg font-semibold mb-2">
+                            Civil Status
+                            <span class="text-xs text-red-400">*</span>
+                        </h2>
+                        <select v-model="form.civilStatus" class="w-full border border-[#0D98BA] rounded px-3 py-2"
+                            required>
+                            <option value="" disabled>Select status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
                     <div>
                         <h2 class="text-lg font-semibold mb-2">Citizenship <span class="text-xs text-red-400">
                                 *
@@ -305,7 +318,7 @@ function handleFileUpload(event) {
                     <div>
                         <label class="block text-gray-700 mb-2">
                             <input type="checkbox" v-model="form.personalAppearance" class="mr-2" />
-                            Personal Appearance  <span class="text-xs text-red-400">
+                            Personal Appearance <span class="text-xs text-red-400">
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.personalAppearance">{{
@@ -317,20 +330,21 @@ function handleFileUpload(event) {
                     <div>
                         <label class="block text-gray-700 mb-2 font-semibold">
                             <span class="text-base text-white bg-[#0D98BA] px-3 py-1 rounded-lg">Valid ID (Upload a
-                                file)  <span class="text-xs text-red-400">
-                                *
-                            </span>
-                            <span class="text-red-600 text-xs" v-if="form.errors.validId">{{
-                                form.errors.validId
-                            }}</span></span>
+                                file) <span class="text-xs text-red-400">
+                                    *
+                                </span>
+                                <span class="text-red-600 text-xs" v-if="form.errors.validId">{{
+                                    form.errors.validId
+                                }}</span></span>
 
-                            <input type="file" accept=".jpg,.jpeg,.png,.pdf" @change="(e) => handleFileUpload(e, 'valId')"
+                            <input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                                @change="(e) => handleFileUpload(e, 'valId')"
                                 class="block w-full mt-2 border-2 border-[#0D98BA] rounded px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0D98BA] cursor-pointer" />
                         </label>
                     </div>
                     <div>
                         <label class="block text-gray-700 mb-2">
-                            Email Address  <span class="text-xs text-red-400">
+                            Email Address <span class="text-xs text-red-400">
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.email">{{
