@@ -33,6 +33,7 @@ const goToSection = (elementId) => {
     }
 };
 
+
 </script>
 
 <template>
@@ -76,41 +77,41 @@ const goToSection = (elementId) => {
                         class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow">
                         Contact
                     </a>
-                    <div class="relative group">
-    <!-- User Button -->
-    <button class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow flex items-center">
-        {{ props.auth.username }}
-        <!-- Dropdown Icon -->
-        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-        </svg>
-    </button>
+                    <div class="relative group" v-if="props.auth">
+                        <button
+                            class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg transition-all text-lg font-bold shadow flex items-center">
+                            {{ props.auth.username }}
+                            <!-- Dropdown Icon -->
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div
+                            class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 origin-top-right transition-all duration-300 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 z-50">
+                            <div class="py-1" role="menu">
+
+                                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">
+                                    Profile
+                                </a>
 
 
-    <div class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 origin-top-right transition-all duration-300 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 z-50">
-        <div class="py-1" role="menu">
+                                <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    role="menuitem">
+                                    Settings
+                                </a>
 
-            <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                Profile
-            </a>
+                                <div class="border-t my-1"></div>
 
-
-            <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
-                Settings
-            </a>
-
-            <div class="border-t my-1"></div>
-
-
-            <form method="POST" role="menuitem">
-
-                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Logout
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+                                <Link as="div" :href="route('logout')" method="post"
+                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Logout
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Burger Menu -->

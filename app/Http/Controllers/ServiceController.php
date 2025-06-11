@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\clearance;
+use App\Models\Clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -144,12 +144,13 @@ class ServiceController extends Controller
         ]);
 
         Mail::send([], [], function ($message) use ($presentId) {
-            $presentId = $message->embed(storage_path("app/public/{$presentId}"));
+
+            $embeddedImage = $message->embed(storage_path("app/public/{$presentId}"));
             $html = "
-                <h1>Clearance Submitted</h1>
-                <p>Attached visuals:</p>
-                <p><strong>Land Title:</strong><br><img src='{$presentId}' style='max-width:500px;'></p>
-            ";
+                    <h1>Clearance Submitted</h1>
+                    <p>Attached visuals:</p>
+                    <p><strong>Land Title:</strong><br><img src='{$embeddedImage}' style='max-width:500px;'></p>
+                ";
 
             $message->to('gonzales.johncris01@gmail.com')
                 ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
