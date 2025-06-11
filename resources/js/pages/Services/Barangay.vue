@@ -1,11 +1,18 @@
 <script setup>
-import { router, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 
 const props = defineProps({
     clearanceForm: {
         type: Object,
         required: false
+    }
+});
+
+onMounted(() => {
+    if (props.clearanceForm) {
+        form.defaults(props.clearanceForm);
+        Object.assign(form, props.clearanceForm);
     }
 });
 

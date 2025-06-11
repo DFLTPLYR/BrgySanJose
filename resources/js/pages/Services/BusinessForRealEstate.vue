@@ -1,7 +1,21 @@
 <script setup>
 
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
 
+const props = defineProps({
+    clearanceForm: {
+        type: Object,
+        required: false
+    }
+});
+
+onMounted(() => {
+    if (props.clearanceForm) {
+        form.defaults(props.clearanceForm);
+        Object.assign(form, props.clearanceForm);
+    }
+});
 const form = useForm({
     lastName: '',
     firstName: '',
@@ -65,7 +79,7 @@ function submitForm() {
                                     *
                                 </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.lastName">{{ form.errors.lastName
-                                    }}</span></label>
+                                }}</span></label>
                             <input v-model="form.lastName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
@@ -74,7 +88,7 @@ function submitForm() {
                                     *
                                 </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.firstName">{{ form.errors.firstName
-                                    }}</span></label>
+                                }}</span></label>
                             <input v-model="form.firstName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
@@ -82,7 +96,7 @@ function submitForm() {
                             <label class="block text-gray-700 mb-1">Middle Name
                                 <span class="text-red-600 text-xs" v-if="form.errors.middleName">{{
                                     form.errors.middleName
-                                    }}</span></label>
+                                }}</span></label>
                             <input v-model="form.middleName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
@@ -96,7 +110,7 @@ function submitForm() {
                         </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.provincialAddress">{{
                             form.errors.provincialAddress
-                            }}</span>
+                        }}</span>
                     </h2>
                     <input v-model="form.provincialAddress" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -109,7 +123,7 @@ function submitForm() {
                         </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.yearsInTagaytay">{{
                             form.errors.yearsInTagaytay
-                            }}</span>
+                        }}</span>
                     </h2>
                     <input v-model="form.yearsInTagaytay" type="number" min="0"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -122,7 +136,7 @@ function submitForm() {
                         </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.presentAddress">{{
                             form.errors.presentAddress
-                            }}</span>
+                        }}</span>
                     </h2>
                     <input v-model="form.presentAddress" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -134,7 +148,7 @@ function submitForm() {
                             *
                         </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.contactNumber">{{ form.errors.contactNumber
-                        }}</span>
+                            }}</span>
                     </h2>
                     <input v-model="form.contactNumber" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -143,27 +157,24 @@ function submitForm() {
                 <!-- Civil Status & Citizenship -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                    <h2 class="text-lg font-semibold mb-2">
-                    Civil Status
-                    <span class="text-xs text-red-400">*</span>
-                    </h2>
-                    <select
-                    v-model="form.civilStatus"
-                    class="w-full border border-[#0D98BA] rounded px-3 py-2"
-                    required
-                    >
-                    <option value="" disabled>Select status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
-                    </select>
-                </div>
+                        <h2 class="text-lg font-semibold mb-2">
+                            Civil Status
+                            <span class="text-xs text-red-400">*</span>
+                        </h2>
+                        <select v-model="form.civilStatus" class="w-full border border-[#0D98BA] rounded px-3 py-2"
+                            required>
+                            <option value="" disabled>Select status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
                     <div>
                         <h2 class="text-lg font-semibold mb-2">Citizenship <span class="text-xs text-red-400">
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.citizenship">{{ form.errors.citizenship
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.citizenship" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -177,7 +188,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.birthdate">{{ form.errors.birthdate
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.birthdate" type="date"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -188,7 +199,7 @@ function submitForm() {
                                 </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.birthplace">{{
                                     form.errors.birthplace
-                                    }}</span></h2>
+                                }}</span></h2>
                         <input v-model="form.birthplace" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -197,7 +208,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.age">{{ form.errors.age
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.age" type="number" min="0"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -211,7 +222,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.occupation">{{ form.errors.occupation
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.occupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -221,7 +232,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.companyName">{{ form.errors.lastName
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.companyName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -235,7 +246,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.spouseName">{{ form.errors.spouseName
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.spouseName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -246,7 +257,7 @@ function submitForm() {
                                 </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.spouseOccupation">{{
                                     form.errors.spouseOccupation
-                                    }}</span></h2>
+                                }}</span></h2>
                         <input v-model="form.spouseOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -259,7 +270,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.fatherName">{{ form.errors.fatherName
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.fatherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -270,7 +281,7 @@ function submitForm() {
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.fatherOccupation">{{
                                 form.errors.fatherOccupation
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.fatherOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -285,7 +296,7 @@ function submitForm() {
                                 </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.motherName">{{
                                     form.errors.motherName
-                                    }}</span></h2>
+                                }}</span></h2>
                         <input v-model="form.motherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -295,7 +306,7 @@ function submitForm() {
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.motherOccupation">{{
                                 form.errors.motherOccupation
-                                }}</span>
+                            }}</span>
                         </h2>
                         <input v-model="form.motherOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
@@ -312,7 +323,7 @@ function submitForm() {
                                 </span>
                                 <span class="text-red-600 text-xs" v-if="form.errors.latestPhoto">{{
                                     form.errors.latestPhoto
-                                    }}</span></span>
+                                }}</span></span>
 
                             <input type="file" accept=".jpg,.jpeg,.png,.pdf"
                                 @change="(e) => handleFileUpload(e, 'latestPhoto')"
@@ -326,7 +337,7 @@ function submitForm() {
                                     <span class="text-red-600 text-xs" v-if="form.errors.taxDeclaration
                                     ">{{ form.errors.taxDeclaration
 
-                                        }}</span>
+                                    }}</span>
 
                                 </span>
                                 <input type="file" accept=".jpg,.jpeg,.png,.pdf"
@@ -345,7 +356,7 @@ function submitForm() {
                                 *
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.email">{{ form.errors.email
-                                }}</span>
+                            }}</span>
                             <input type="email" v-model="form.email"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2 mt-2"
                                 placeholder="Enter your email" required />
