@@ -44,11 +44,11 @@ function submitForm() {
         <img src="/images/logo/logomain.png" alt="Barangay Logo" class="w-40 h-40 object-contain mx-auto mb-4" />
         <ReturnHomeButton />
         <div class="text-[#0D98BA] flex items-center justify-center text-2xl font-bold mb-4">
-            Business Clearance New
+            Business Clearance For Real Estate
         </div>
         <div>
             <p class="text-gray-600 mb-6 justify-center flex items-center">
-                Please fill out the form below to apply for a Working Clearance.
+                Please fill out the form below to apply for a For Real Estate.
             </p>
         </div>
 

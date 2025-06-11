@@ -51,7 +51,7 @@ function submitForm() {
         </div>
         <div>
             <p class="text-gray-600 mb-6 justify-center flex items-center">
-                Please fill out the form below to apply for a Working Clearance.
+                Please fill out the form below to apply for a Working Business Clearance New.
             </p>
         </div>
 
