@@ -33,11 +33,16 @@ Route::prefix('/services')->group(function () {
     Route::get('/fencing-building-permit', [ServiceController::class, 'FenceBuilding'])->name('fencing-building-permit');
     Route::post('/fencing-building-permit', [ServiceController::class, 'SubmitFenceBuildingForm'])->name('fencing-building-permit-form');
 
-    Route::get('/business-clearance', [ServiceController::class, 'Business'])->name('business-clearance');
+    Route::prefix('/business-clearance')->group(function () {
+        Route::get('/', [ServiceController::class, 'Business'])->name('business-clearance');
+        Route::get('-new', [ServiceController::class, 'Business-new'])->name('business-clearance-new');
+        Route::get('-renewal', [ServiceController::class, 'Business-renewal'])->name('business-clearance-renewal');
+        Route::get('-forRealEstate', [ServiceController::class, 'Business-forRealEstate'])->name('business-clearance-forRealEstate');
+    });
 
     Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
     Route::post('/indigency-clearance', [ServiceController::class, 'SubmitIndigencyForm'])->name('indigency-clearance-form');
 });
 
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';
