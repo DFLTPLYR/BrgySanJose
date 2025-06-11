@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 defineProps({
     isHome: Boolean
 });
@@ -32,6 +32,10 @@ const goToSection = (elementId) => {
         });
     }
 };
+
+function signOut() {
+    router.post(route('logout'), {}, { onFinish: () => location.reload() })
+}
 
 
 </script>
@@ -92,10 +96,10 @@ const goToSection = (elementId) => {
                             class="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 origin-top-right transition-all duration-300 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 z-50">
                             <div class="py-1" role="menu">
 
-                                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                    role="menuitem">
-                                    Profile
-                                </a>
+                                <Link :href="route('dashboard')"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                                Dashboard
+                                </Link>
 
 
                                 <a href="/settings" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -105,10 +109,10 @@ const goToSection = (elementId) => {
 
                                 <div class="border-t my-1"></div>
 
-                                <Link as="div" :href="route('logout')" method="post"
+                                <button @click="signOut"
                                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                Logout
-                                </Link>
+                                    Logout
+                                </button>
                             </div>
                         </div>
                     </div>

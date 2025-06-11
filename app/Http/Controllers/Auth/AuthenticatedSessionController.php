@@ -39,6 +39,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->intended(route('home', absolute: false));
+        return redirect()->intended(route('home', absolute: true));
     }
 }
