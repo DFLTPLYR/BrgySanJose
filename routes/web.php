@@ -8,6 +8,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
+Route::get('/log-in', function () {
+    return Inertia::render('LogIn');
+})->name('log-in');
+
 Route::get('/about-us', function () {
     return Inertia::render('AboutUs');
 })->name('about-us');
@@ -35,5 +39,5 @@ Route::prefix('/services')->group(function () {
     Route::post('/indigency-clearance', [ServiceController::class, 'SubmitIndigencyForm'])->name('indigency-clearance-form');
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
