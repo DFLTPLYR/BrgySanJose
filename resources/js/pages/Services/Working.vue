@@ -3,7 +3,6 @@ import ReturnHomeButton from '@/components/ReturnHomeButton.vue';
 import { router, useForm } from '@inertiajs/vue3';
 import Swal from 'sweetalert2';
 import { onMounted } from 'vue';
-import Swal from 'sweetalert2'
 import { Head } from '@inertiajs/vue3';
 const props = defineProps({
     clearanceForm: {
