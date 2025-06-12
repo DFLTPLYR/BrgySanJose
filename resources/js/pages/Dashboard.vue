@@ -1,7 +1,8 @@
 <script setup>
 import Layout from '@/layouts/Layout.vue';
 import { computed, ref } from 'vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
+import Swal from 'sweetalert2'
 
 const page = usePage();
 
@@ -101,6 +102,32 @@ const getEditLink = (clearance) => {
         : '#';
 };
 
+const showModal = (id) => {
+    Swal.fire({
+        title: 'Do you want to delete this clearance?',
+        showDenyButton: false,
+        showCancelButton: true,
+        confirmButtonText: 'Yes',
+        denyButtonText: 'No',
+        customClass: {
+            actions: 'my-actions',
+            cancelButton: 'order-1 right-gap',
+            confirmButton: 'order-2',
+            denyButton: 'order-3',
+        },
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.delete(route('clearance.destroy', id), {
+                onSuccess: () => {
+                    Swal.fire('Deleted!', '', 'success')
+                }
+            })
+        } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+        }
+    })
+}
+
 </script>
 
 <template>
@@ -153,10 +180,11 @@ const getEditLink = (clearance) => {
                                 Edit
                                 </Link>
 
-                                <a href="#" class="text-red-600 hover:text-red-900 hover:underline"
-                                    v-if="page.props.auth.role === 'Admin'">
+                                <button @click="showModal(clearance.id)"
+                                    class="text-red-600 hover:text-red-900 hover:underline"
+                                    v-if="['Admin', 'SuperAdmin'].includes(page.props.auth.role)">
                                     Delete
-                                </a>
+                                </button>
                             </td>
                         </tr>
                     </tbody>

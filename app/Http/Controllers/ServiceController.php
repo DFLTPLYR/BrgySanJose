@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
@@ -29,5 +31,12 @@ class ServiceController extends Controller
         });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
+    }
+
+    public function destroy(Request $request,int $id){
+        if(Auth::check() && $id){
+            Clearance::destroy($id);
+        }
+        return redirect()->back();
     }
 }

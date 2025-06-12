@@ -55,7 +55,8 @@ function submitForm() {
         preserveScroll: true, errorBag: 'BusinessRenewalErrorForm',
         onError: e => console.log(e),
         onSuccess: () => {
-            form.reset(), Swal.fire({
+            form.reset();
+            Swal.fire({
                 title: 'Do you want to register again?',
                 showDenyButton: true,
                 showCancelButton: false,

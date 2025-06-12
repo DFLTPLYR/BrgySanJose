@@ -51,27 +51,27 @@ function submitForm() {
         preserveScroll: true, errorBag: 'barangayClearanceErrorForm',
         onError: e => console.log(e),
         onSuccess: () => {
-            form.reset(),
-                Swal.fire({
-                    title: 'Do you want to register again?',
-                    showDenyButton: true,
-                    showCancelButton: false,
-                    confirmButtonText: 'Yes',
-                    denyButtonText: 'No',
-                    customClass: {
-                        actions: 'my-actions',
-                        cancelButton: 'order-1 right-gap',
-                        confirmButton: 'order-2',
-                        denyButton: 'order-3',
-                    },
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire('Sent!', '', 'success')
-                    } else if (result.isDenied) {
-                        Swal.fire('Thank you!', '', 'info')
-                        router.visit(route('home'))
-                    }
-                })
+            form.reset();
+            Swal.fire({
+                title: 'Do you want to register again?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Yes',
+                denyButtonText: 'No',
+                customClass: {
+                    actions: 'my-actions',
+                    cancelButton: 'order-1 right-gap',
+                    confirmButton: 'order-2',
+                    denyButton: 'order-3',
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Sent!', '', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Thank you!', '', 'info')
+                    router.visit(route('home'))
+                }
+            })
         }
     });
 }
@@ -187,7 +187,7 @@ onMounted(() => {
                             *
                         </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.contactNumber">{{ form.errors.contactNumber
-                        }}</span>
+                            }}</span>
                     </h2>
                     <input v-model="form.contactNumber" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
