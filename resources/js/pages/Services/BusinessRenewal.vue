@@ -1,6 +1,6 @@
 <script setup>
 import ReturnHomeButton from '@/components/ReturnHomeButton.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, router } from '@inertiajs/vue3';
 import { onMounted } from 'vue'
 
 const props = defineProps({
@@ -50,7 +50,30 @@ function handleFileUpload(event, key) {
 }
 
 function submitForm() {
-    form.post(route('submit-business-clearance-renewal'), { preserveScroll: true, errorBag: 'BusinessRenewalErrorForm', onError: e => console.log(e), onSuccess: () => form.reset() });
+    form.post(route('submit-business-clearance-renewal'), {
+        preserveScroll: true, errorBag: 'BusinessRenewalErrorForm', onError: e => console.log(e), onSuccess: () => {
+            form.reset(), Swal.fire({
+                title: 'Do you want to register again?',
+                showDenyButton: true,
+                showCancelButton: false,
+                confirmButtonText: 'Yes',
+                denyButtonText: 'No',
+                customClass: {
+                    actions: 'my-actions',
+                    cancelButton: 'order-1 right-gap',
+                    confirmButton: 'order-2',
+                    denyButton: 'order-3',
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('Sent!', '', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Thank you!', '', 'info')
+                    router.visit(route('home'))
+                }
+            })
+        }
+    });
 }
 </script>
 
