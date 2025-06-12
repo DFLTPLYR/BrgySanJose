@@ -9,9 +9,10 @@ use App\Http\Controllers\Service\RenewalClearance;
 use App\Http\Controllers\Service\WaterElectricClearance;
 use App\Http\Controllers\Service\WorkingClearance;
 use App\Http\Controllers\ServiceController;
+use App\Http\Middleware\PreventUnauthorizeEdit;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('/services')->group(function () {
+Route::prefix('/services')->middleware(PreventUnauthorizeEdit::class)->group(function () {
     Route::get('/barangay-clearance', [BarangayClearance::class, 'index'])->name('barangay-clearance');
     Route::post('/barangay-clearance', [BarangayClearance::class, 'store'])->name('barangay-clearance-form');
 

@@ -70,8 +70,20 @@ const sortedClearances = computed(() => {
                         route = 'business-clearance-forrealestate';
                         break;
                     default:
-                        route = 'business-clearance';
+                        return;
                 }
+                break;
+            case 'working_clearance':
+                route = 'working-clearance-form';
+                break;
+            case 'water_and_electrical_clearance':
+                route = "water-electrical-permit-form";
+                break;
+            case 'fencing_clearance':
+                route = "fencing-building-permit-form";
+                break;
+            case 'indigency_clearance':
+                route = "indigency-clearance-form'";
                 break;
             default:
                 route = null;
