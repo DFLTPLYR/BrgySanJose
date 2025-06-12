@@ -11,8 +11,6 @@ import Contacts from '@/components/Contacts.vue';
 import BarangayOfficials from '@/components/BarangayOfficials.vue';
 import { Link } from '@inertiajs/vue3';
 
-
-
 const showHero = ref(true);
 
 onMounted(() => {
