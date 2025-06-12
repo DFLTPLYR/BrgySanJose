@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -15,12 +14,18 @@ class ClearanceCopy extends Mailable
 
     public $embeddedImages;
 
+    public $clearanceType;
+
+    public $receiver;
+
     /**
      * Create a new message instance.
      */
-    public function __construct(array $embeddedImages = [])
+    public function __construct(array $embeddedImages, string $clearanceType, string $receiver)
     {
         $this->embeddedImages = $embeddedImages;
+        $this->clearanceType = $clearanceType;
+        $this->receiver = $receiver;
     }
 
     /**
@@ -42,6 +47,8 @@ class ClearanceCopy extends Mailable
             markdown: 'mail.clearance-copy',
             with: [
                 'embeddedImages' => $this->embeddedImages,
+                'clearanceType' => $this->clearanceType,
+                'receiver' => $this->receiver,
             ]
         );
     }

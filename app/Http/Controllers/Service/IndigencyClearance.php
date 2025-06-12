@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ClearanceCopy;
+use App\Mail\ClearanceMail;
 use App\Models\Clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class IndigencyClearance extends Controller
@@ -44,37 +48,51 @@ class IndigencyClearance extends Controller
             'medicalBill' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $medicalAbstract = $request->file('medicalAbstract')->store('medicals', 'public');
-        $medicalBill = $request->file('medicalBill')->store('medicals', 'public');
+        DB::transaction(function () use ($validated, $request) {
+            $medicalAbstract = $request->file('medicalAbstract')->store('medicals', 'public');
+            $medicalBill = $request->file('medicalBill')->store('medicals', 'public');
+            $embeddedImages = [
+                'medicalAbstract' => storage_path("app/public/{$medicalAbstract}"),
+                'medicalBill' => storage_path("app/public/{$medicalBill}"),
+            ];
 
-        Clearance::create([
-            'clearance_type' => 'indigency_clearance',
-            'firstName' => $validated['firstName'],
-            'lastName' => $validated['lastName'],
-            'middleName' => $validated['middleName'],
-            'provincialAddress' => $validated['provincialAddress'],
-            'yearsInTagaytay' => $validated['yearsInTagaytay'],
-            'presentAddress' => $validated['presentAddress'],
-            'contactNumber' => $validated['contactNumber'],
-            'civilStatus' => $validated['civilStatus'],
-            'citizenship' => $validated['citizenship'],
-            'birthdate' => $validated['birthdate'],
-            'birthplace' => $validated['birthplace'],
-            'age' => $validated['age'],
-            'occupation' => $validated['occupation'],
-            'companyName' => $validated['companyName'],
-            'spouseName' => $validated['spouseName'] ?? null,
-            'spouseOccupation' => $validated['spouseOccupation'] ?? null,
-            'fatherName' => $validated['fatherName'],
-            'fatherOccupation' => $validated['fatherOccupation'] ?? null,
-            'motherName' => $validated['motherName'],
-            'motherOccupation' => $validated['motherOccupation'] ?? null,
-            'additional_data' => [
-                'email' => $validated['email'],
-                'medicalAbstract' => $medicalAbstract,
-                'medicalBill' => $medicalBill,
-            ],
-        ]);
+            Clearance::create([
+                'clearance_type' => 'indigency_clearance',
+                'firstName' => $validated['firstName'],
+                'lastName' => $validated['lastName'],
+                'middleName' => $validated['middleName'],
+                'provincialAddress' => $validated['provincialAddress'],
+                'yearsInTagaytay' => $validated['yearsInTagaytay'],
+                'presentAddress' => $validated['presentAddress'],
+                'contactNumber' => $validated['contactNumber'],
+                'civilStatus' => $validated['civilStatus'],
+                'citizenship' => $validated['citizenship'],
+                'birthdate' => $validated['birthdate'],
+                'birthplace' => $validated['birthplace'],
+                'age' => $validated['age'],
+                'occupation' => $validated['occupation'],
+                'companyName' => $validated['companyName'],
+                'spouseName' => $validated['spouseName'] ?? null,
+                'spouseOccupation' => $validated['spouseOccupation'] ?? null,
+                'fatherName' => $validated['fatherName'],
+                'fatherOccupation' => $validated['fatherOccupation'] ?? null,
+                'motherName' => $validated['motherName'],
+                'motherOccupation' => $validated['motherOccupation'] ?? null,
+                'additional_data' => [
+                    'email' => $validated['email'],
+                    'medicalAbstract' => $medicalAbstract,
+                    'medicalBill' => $medicalBill,
+                ],
+            ]);
+
+            // Send the email
+            $receiver = $validated['firstName'].' '.$validated['lastName'];
+            $clearanceType = 'Indigency Clearance';
+
+            // Send the email
+            Mail::to($validated['email'])->send(new ClearanceMail($embeddedImages, $receiver, $clearanceType));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ClearanceCopy($embeddedImages, $receiver, $clearanceType));
+        });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }

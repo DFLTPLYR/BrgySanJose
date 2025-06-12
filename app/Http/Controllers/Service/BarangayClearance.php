@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
 use App\Mail\ClearanceCopy;
+use App\Mail\ClearanceMail;
 use App\Models\Clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -80,11 +81,16 @@ class BarangayClearance extends Controller
             ]);
 
             $embeddedImages = [
-                'image1' => storage_path("app/public/{$validIdPath}"),
+                'validIdPath' => storage_path("app/public/{$validIdPath}"),
             ];
 
             // Send the email
-            Mail::to($validated['email'])->send(new ClearanceCopy($embeddedImages));
+            $receiver = $validated['firstName'].' '.$validated['lastName'];
+            $clearanceType = 'Barangay Clearance';
+
+            // Send the email
+            Mail::to($validated['email'])->send(new ClearanceMail($embeddedImages, $receiver, $clearanceType));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ClearanceCopy($embeddedImages, $receiver, $clearanceType));
         });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');

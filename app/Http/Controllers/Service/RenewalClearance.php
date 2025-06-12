@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ClearanceCopy;
+use App\Mail\ClearanceMail;
 use App\Models\Clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class RenewalClearance extends Controller
@@ -45,40 +49,55 @@ class RenewalClearance extends Controller
             'financialState' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $latestPhoto = $request->file('latestPhoto')->store('latest_photos', 'public');
-        $priorYear = $request->file('priorYear')->store('priorYear', 'public');
-        $financialState = $request->file('financialState')->store('financialState', 'public');
+        DB::transaction(function () use ($validated, $request) {
+            $latestPhoto = $request->file('latestPhoto')->store('latest_photos', 'public');
+            $priorYear = $request->file('priorYear')->store('priorYear', 'public');
+            $financialState = $request->file('financialState')->store('financialState', 'public');
 
-        Clearance::create([
-            'clearance_type' => 'business_clearance',
-            'firstName' => $validated['firstName'],
-            'lastName' => $validated['lastName'],
-            'middleName' => $validated['middleName'],
-            'provincialAddress' => $validated['provincialAddress'],
-            'yearsInTagaytay' => $validated['yearsInTagaytay'],
-            'presentAddress' => $validated['presentAddress'],
-            'contactNumber' => $validated['contactNumber'],
-            'civilStatus' => $validated['civilStatus'],
-            'citizenship' => $validated['citizenship'],
-            'birthdate' => $validated['birthdate'],
-            'birthplace' => $validated['birthplace'],
-            'age' => $validated['age'],
-            'occupation' => $validated['occupation'],
-            'companyName' => $validated['companyName'],
-            'spouseName' => $validated['spouseName'] ?? null,
-            'spouseOccupation' => $validated['spouseOccupation'] ?? null,
-            'fatherName' => $validated['fatherName'],
-            'fatherOccupation' => $validated['fatherOccupation'] ?? null,
-            'motherName' => $validated['motherName'],
-            'motherOccupation' => $validated['motherOccupation'] ?? null,
-            'additional_data' => [
-                'email' => $validated['email'],
-                'latestPhoto' => $latestPhoto,
-                'financialState' => $financialState,
-                'priorYear' => $priorYear,
-                'business_clearance_type' => 'renewal',
-            ],
-        ]);
+            Clearance::create([
+                'clearance_type' => 'business_clearance',
+                'firstName' => $validated['firstName'],
+                'lastName' => $validated['lastName'],
+                'middleName' => $validated['middleName'],
+                'provincialAddress' => $validated['provincialAddress'],
+                'yearsInTagaytay' => $validated['yearsInTagaytay'],
+                'presentAddress' => $validated['presentAddress'],
+                'contactNumber' => $validated['contactNumber'],
+                'civilStatus' => $validated['civilStatus'],
+                'citizenship' => $validated['citizenship'],
+                'birthdate' => $validated['birthdate'],
+                'birthplace' => $validated['birthplace'],
+                'age' => $validated['age'],
+                'occupation' => $validated['occupation'],
+                'companyName' => $validated['companyName'],
+                'spouseName' => $validated['spouseName'] ?? null,
+                'spouseOccupation' => $validated['spouseOccupation'] ?? null,
+                'fatherName' => $validated['fatherName'],
+                'fatherOccupation' => $validated['fatherOccupation'] ?? null,
+                'motherName' => $validated['motherName'],
+                'motherOccupation' => $validated['motherOccupation'] ?? null,
+                'additional_data' => [
+                    'email' => $validated['email'],
+                    'latestPhoto' => $latestPhoto,
+                    'financialState' => $financialState,
+                    'priorYear' => $priorYear,
+                    'business_clearance_type' => 'renewal',
+                ],
+            ]);
+
+            $embeddedImages = [
+                'latestPhoto' => storage_path("app/public/{$latestPhoto}"),
+                'priorYear' => storage_path("app/public/{$priorYear}"),
+                'financialState' => storage_path("app/public/{$financialState}"),
+            ];
+
+            $receiver = $validated['firstName'].' '.$validated['lastName'];
+            $clearanceType = 'Renewal Clearance';
+
+            // Send the email
+            Mail::to($validated['email'])->send(new ClearanceMail($embeddedImages, $receiver, $clearanceType));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ClearanceCopy($embeddedImages, $receiver, $clearanceType));
+        });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ClearanceCopy;
+use App\Mail\ClearanceMail;
 use App\Models\Clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
@@ -19,6 +22,7 @@ class FencingClearance extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validateWithBag('fenceBuildingErrorForm',
             [
                 'lastName' => 'required|string|max:100',
@@ -49,62 +53,57 @@ class FencingClearance extends Controller
                 'employeeList' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             ]);
 
-        $landTitlePath = $request->file('landTitle')->store('land_titles', 'public');
-        $structureDesignPath = $request->file('structureDesign')->store('structure_designs', 'public');
-        $latestPhotoPath = $request->file('latestPhoto')->store('latest_photos', 'public');
-        $employeeListPath = $request->file('employeeList')->store('employee_lists', 'public');
+        DB::transaction(function () use ($validated, $request) {
+            $landTitlePath = $request->file('landTitle')->store('land_titles', 'public');
+            $structureDesignPath = $request->file('structureDesign')->store('structure_designs', 'public');
+            $latestPhotoPath = $request->file('latestPhoto')->store('latest_photos', 'public');
+            $employeeListPath = $request->file('employeeList')->store('employee_lists', 'public');
 
-        // Create the clearance record
-        Clearance::create([
-            'clearance_type' => 'fencing_clearance',
-            'firstName' => $validated['firstName'],
-            'lastName' => $validated['lastName'],
-            'middleName' => $validated['middleName'],
-            'provincialAddress' => $validated['provincialAddress'],
-            'yearsInTagaytay' => $validated['yearsInTagaytay'],
-            'presentAddress' => $validated['presentAddress'],
-            'contactNumber' => $validated['contactNumber'],
-            'civilStatus' => $validated['civilStatus'],
-            'citizenship' => $validated['citizenship'],
-            'birthdate' => $validated['birthdate'],
-            'birthplace' => $validated['birthplace'],
-            'age' => $validated['age'],
-            'occupation' => $validated['occupation'],
-            'companyName' => $validated['companyName'],
-            'spouseName' => $validated['spouseName'] ?? null,
-            'spouseOccupation' => $validated['spouseOccupation'] ?? null,
-            'fatherName' => $validated['fatherName'],
-            'fatherOccupation' => $validated['fatherOccupation'] ?? null,
-            'motherName' => $validated['motherName'],
-            'motherOccupation' => $validated['motherOccupation'] ?? null,
-            'additional_data' => [
-                'email' => $validated['email'],
-                'personalAppearance' => $validated['personalAppearance'],
-                'landTitle' => $landTitlePath,
-                'structureDesign' => $structureDesignPath,
-                'latestPhoto' => $latestPhotoPath,
-                'employeeList' => $employeeListPath,
-            ],
-        ]);
+            // Create the clearance record
+            Clearance::create([
+                'clearance_type' => 'fencing_clearance',
+                'firstName' => $validated['firstName'],
+                'lastName' => $validated['lastName'],
+                'middleName' => $validated['middleName'],
+                'provincialAddress' => $validated['provincialAddress'],
+                'yearsInTagaytay' => $validated['yearsInTagaytay'],
+                'presentAddress' => $validated['presentAddress'],
+                'contactNumber' => $validated['contactNumber'],
+                'civilStatus' => $validated['civilStatus'],
+                'citizenship' => $validated['citizenship'],
+                'birthdate' => $validated['birthdate'],
+                'birthplace' => $validated['birthplace'],
+                'age' => $validated['age'],
+                'occupation' => $validated['occupation'],
+                'companyName' => $validated['companyName'],
+                'spouseName' => $validated['spouseName'] ?? null,
+                'spouseOccupation' => $validated['spouseOccupation'] ?? null,
+                'fatherName' => $validated['fatherName'],
+                'fatherOccupation' => $validated['fatherOccupation'] ?? null,
+                'motherName' => $validated['motherName'],
+                'motherOccupation' => $validated['motherOccupation'] ?? null,
+                'additional_data' => [
+                    'email' => $validated['email'],
+                    'personalAppearance' => $validated['personalAppearance'],
+                    'landTitle' => $landTitlePath,
+                    'structureDesign' => $structureDesignPath,
+                    'latestPhoto' => $latestPhotoPath,
+                    'employeeList' => $employeeListPath,
+                ],
+            ]);
 
-        Mail::send([], [], function ($message) use ($landTitlePath, $structureDesignPath, $latestPhotoPath, $employeeListPath) {
-            $landTitleCid = $message->embed(storage_path("app/public/{$landTitlePath}"));
-            $latestPhotoCid = $message->embed(storage_path("app/public/{$structureDesignPath}"));
-            $structureDesignCid = $message->embed(storage_path("app/public/{$latestPhotoPath}"));
-            $employeeListCid = $message->embed(storage_path("app/public/{$employeeListPath}"));
-            $html = "
-                <h1>Clearance Submitted</h1>
-                <p>Attached visuals:</p>
-                <p><strong>Land Title:</strong><br><img src='{$landTitleCid}' style='max-width:500px;'></p>
-                <p><strong>Latest Photo:</strong><br><img src='{$latestPhotoCid}' style='max-width:500px;'></p>
-                <p><strong>Latest Photo:</strong><br><img src='{$structureDesignCid}' style='max-width:500px;'></p>
-                <p><strong>Latest Photo:</strong><br><img src='{$employeeListCid}' style='max-width:500px;'></p>
-            ";
+            $embeddedImages = [
+                'landTitlePath' => storage_path("app/public/{$landTitlePath}"),
+                'structureDesignPath' => storage_path("app/public/{$structureDesignPath}"),
+                'latestPhotoPath' => storage_path("app/public/{$latestPhotoPath}"),
+                'employeeListPath' => storage_path("app/public/{$employeeListPath}"),
+            ];
+            $receiver = $validated['firstName'].' '.$validated['lastName'];
+            $clearanceType = 'Fencing Clearance';
 
-            $message->to('gonzales.johncris01@gmail.com')
-                ->from('barangaysanjose1938@gmail.com', 'Barangay San Jose')
-                ->subject('Clearance Submission with Embedded Files')
-                ->html($html);
+            // Send the email
+            Mail::to($validated['email'])->send(new ClearanceMail($embeddedImages, $receiver, $clearanceType));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ClearanceCopy($embeddedImages, $receiver, $clearanceType));
         });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');

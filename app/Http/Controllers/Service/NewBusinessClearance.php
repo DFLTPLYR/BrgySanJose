@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ClearanceCopy;
+use App\Mail\ClearanceMail;
 use App\Models\Clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class NewBusinessClearance extends Controller
@@ -12,6 +16,7 @@ class NewBusinessClearance extends Controller
     public function index(Request $request)
     {
         $id = $request->query('id');
+
         return Inertia::render('Services/Business', ['clearanceForm' => $id ? Clearance::findOrFail($id) : null]);
     }
 
@@ -46,44 +51,58 @@ class NewBusinessClearance extends Controller
             'listEmployee' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $latestPhoto = $request->file('latestPhoto')->store('latest_photos', 'public');
-        $dtiSec = $request->file('dtiSec')->store('dtiSec', 'public');
-        $contractLease = $request->file('contractLease')->store('contractLease', 'public');
-        $sketchBusiness = $request->file('sketchBusiness')->store('sketchBusiness', 'public');
-        $listEmployee = $request->file('listEmployee')->store('listEmployee', 'public');
+        DB::transaction(function () use ($validated, $request) {
+            $latestPhoto = $request->file('latestPhoto')->store('latest_photos', 'public');
+            $dtiSec = $request->file('dtiSec')->store('dtiSec', 'public');
+            $contractLease = $request->file('contractLease')->store('contractLease', 'public');
+            $sketchBusiness = $request->file('sketchBusiness')->store('sketchBusiness', 'public');
+            $listEmployee = $request->file('listEmployee')->store('listEmployee', 'public');
+            $embeddedImages = [
+                'latestPhoto' => storage_path("app/public/{$latestPhoto}"),
+                'dtiSec' => storage_path("app/public/{$dtiSec}"),
+                'contractLease' => storage_path("app/public/{$contractLease}"),
+                'sketchBusiness' => storage_path("app/public/{$sketchBusiness}"),
+                'listEmployee' => storage_path("app/public/{$listEmployee}"),
+            ];
+            Clearance::create([
+                'clearance_type' => 'business_clearance',
+                'firstName' => $validated['firstName'],
+                'lastName' => $validated['lastName'],
+                'middleName' => $validated['middleName'],
+                'provincialAddress' => $validated['provincialAddress'],
+                'yearsInTagaytay' => $validated['yearsInTagaytay'],
+                'presentAddress' => $validated['presentAddress'],
+                'contactNumber' => $validated['contactNumber'],
+                'civilStatus' => $validated['civilStatus'],
+                'citizenship' => $validated['citizenship'],
+                'birthdate' => $validated['birthdate'],
+                'birthplace' => $validated['birthplace'],
+                'age' => $validated['age'],
+                'occupation' => $validated['occupation'],
+                'companyName' => $validated['companyName'],
+                'spouseName' => $validated['spouseName'] ?? null,
+                'spouseOccupation' => $validated['spouseOccupation'] ?? null,
+                'fatherName' => $validated['fatherName'],
+                'fatherOccupation' => $validated['fatherOccupation'] ?? null,
+                'motherName' => $validated['motherName'],
+                'motherOccupation' => $validated['motherOccupation'] ?? null,
+                'additional_data' => [
+                    'email' => $validated['email'],
+                    'latestPhoto' => $latestPhoto,
+                    'dtiSec' => $dtiSec,
+                    'contractLease' => $contractLease,
+                    'sketchBusiness' => $sketchBusiness,
+                    'listEmployee' => $listEmployee,
+                    'business_clearance_type' => 'new',
+                ],
+            ]);
+            $receiver = $validated['firstName'].' '.$validated['lastName'];
+            $clearanceType = 'New Business Clearance';
 
-        Clearance::create([
-            'clearance_type' => 'business_clearance',
-            'firstName' => $validated['firstName'],
-            'lastName' => $validated['lastName'],
-            'middleName' => $validated['middleName'],
-            'provincialAddress' => $validated['provincialAddress'],
-            'yearsInTagaytay' => $validated['yearsInTagaytay'],
-            'presentAddress' => $validated['presentAddress'],
-            'contactNumber' => $validated['contactNumber'],
-            'civilStatus' => $validated['civilStatus'],
-            'citizenship' => $validated['citizenship'],
-            'birthdate' => $validated['birthdate'],
-            'birthplace' => $validated['birthplace'],
-            'age' => $validated['age'],
-            'occupation' => $validated['occupation'],
-            'companyName' => $validated['companyName'],
-            'spouseName' => $validated['spouseName'] ?? null,
-            'spouseOccupation' => $validated['spouseOccupation'] ?? null,
-            'fatherName' => $validated['fatherName'],
-            'fatherOccupation' => $validated['fatherOccupation'] ?? null,
-            'motherName' => $validated['motherName'],
-            'motherOccupation' => $validated['motherOccupation'] ?? null,
-            'additional_data' => [
-                'email' => $validated['email'],
-                'latestPhoto' => $latestPhoto,
-                'dtiSec' => $dtiSec,
-                'contractLease' => $contractLease,
-                'sketchBusiness' => $sketchBusiness,
-                'listEmployee' => $listEmployee,
-                'business_clearance_type' => 'new',
-            ],
-        ]);
+            // Send the email
+            Mail::to($validated['email'])->send(new ClearanceMail($embeddedImages, $receiver, $clearanceType));
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ClearanceCopy($embeddedImages, $receiver, $clearanceType));
+        });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
