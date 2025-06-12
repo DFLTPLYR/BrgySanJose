@@ -39,21 +39,6 @@ onMounted(() => {
     })
 })
 
-const goToSection = (elementId) => {
-    const element = document.getElementById(elementId);
-    if (element) {
-        const headerHeight = document.querySelector('header')?.offsetHeight || 0;
-        const offset = headerHeight + 20;
-
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-    }
-};
 
 </script>
 
