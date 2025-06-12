@@ -47,28 +47,30 @@ const form = useForm({
 
 function submitForm() {
     form.post(route('barangay-clearance-form'), {
-        preserveScroll: true, errorBag: 'barangayClearanceErrorForm', onError: e => console.log(e),
+        preserveScroll: true, errorBag: 'barangayClearanceErrorForm',
+        onError: e => console.log(e),
         onSuccess: () => {
-            form.reset(), Swal.fire({
-                title: 'Do you want to register again?',
-                showDenyButton: true,
-                showCancelButton: false,
-                confirmButtonText: 'Yes',
-                denyButtonText: 'No',
-                customClass: {
-                    actions: 'my-actions',
-                    cancelButton: 'order-1 right-gap',
-                    confirmButton: 'order-2',
-                    denyButton: 'order-3',
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire('Sent!', '', 'success')
-                } else if (result.isDenied) {
-                    Swal.fire('Thank you!', '', 'info')
-                    router.visit(route('home'))
-                }
-            })
+            form.reset(),
+                Swal.fire({
+                    title: 'Do you want to register again?',
+                    showDenyButton: true,
+                    showCancelButton: false,
+                    confirmButtonText: 'Yes',
+                    denyButtonText: 'No',
+                    customClass: {
+                        actions: 'my-actions',
+                        cancelButton: 'order-1 right-gap',
+                        confirmButton: 'order-2',
+                        denyButton: 'order-3',
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire('Sent!', '', 'success')
+                    } else if (result.isDenied) {
+                        Swal.fire('Thank you!', '', 'info')
+                        router.visit(route('home'))
+                    }
+                })
         }
     });
 }
