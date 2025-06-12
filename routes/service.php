@@ -1,35 +1,43 @@
 <?php
 
+use App\Http\Controllers\Service\BarangayClearance;
+use App\Http\Controllers\Service\FencingClearance;
+use App\Http\Controllers\Service\IndigencyClearance;
+use App\Http\Controllers\Service\NewBusinessClearance;
+use App\Http\Controllers\Service\RealEstateClearance;
+use App\Http\Controllers\Service\RenewalClearance;
+use App\Http\Controllers\Service\WaterElectricClearance;
+use App\Http\Controllers\Service\WorkingClearance;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/services')->group(function () {
-    Route::get('/barangay-clearance', [ServiceController::class, 'Barangay'])->name('barangay-clearance');
-    Route::post('/barangay-clearance', [ServiceController::class, 'SubmitClearanceForm'])->name('barangay-clearance-form');
+    Route::get('/barangay-clearance', [BarangayClearance::class, 'index'])->name('barangay-clearance');
+    Route::post('/barangay-clearance', [BarangayClearance::class, 'store'])->name('barangay-clearance-form');
 
-    Route::get('/working-clearance', [ServiceController::class, 'Working'])->name('working-clearance');
-    Route::post('/working-clearance', [ServiceController::class, 'SubmitWorkingForm'])->name('working-clearance-form');
+    Route::get('/working-clearance', [WorkingClearance::class, 'index'])->name('working-clearance');
+    Route::post('/working-clearance', [WorkingClearance::class, 'store'])->name('working-clearance-form');
 
-    Route::get('/water-electrical-permit', [ServiceController::class, 'WaterElectrical'])->name('water-electrical-permit');
-    Route::post('/water-electrical-permit', [ServiceController::class, 'SubmitWaterElectricalForm'])->name('water-electrical-permit-form');
+    Route::get('/water-electrical-permit', [WaterElectricClearance::class, 'index'])->name('water-electrical-permit');
+    Route::post('/water-electrical-permit', [WaterElectricClearance::class, 'store'])->name('water-electrical-permit-form');
 
-    Route::get('/fencing-building-permit', [ServiceController::class, 'FenceBuilding'])->name('fencing-building-permit');
-    Route::post('/fencing-building-permit', [ServiceController::class, 'SubmitFenceBuildingForm'])->name('fencing-building-permit-form');
+    Route::get('/fencing-building-permit', [FencingClearance::class, 'index'])->name('fencing-building-permit');
+    Route::post('/fencing-building-permit', [FencingClearance::class, 'store'])->name('fencing-building-permit-form');
 
     Route::prefix('/business-clearance')->group(function () {
         // index
         Route::get('/', [ServiceController::class, 'Business'])->name('business-clearance');
         // new clearance
-        Route::get('-new', [ServiceController::class, 'BusinessNew'])->name('business-clearance-new');
-        Route::post('-new', [ServiceController::class, 'SubmitFormBusinessNew'])->name('submit-business-clearance-new');
+        Route::get('-new', [NewBusinessClearance::class, 'index'])->name('business-clearance-new');
+        Route::post('-new', [NewBusinessClearance::class, 'store'])->name('submit-business-clearance-new');
         // renewal
-        Route::get('-renewal', [ServiceController::class, 'BusinessRenewal'])->name('business-clearance-renewal');
-        Route::post('-renewal', [ServiceController::class, 'SubmitFormBusinessRenewal'])->name('submit-business-clearance-renewal');
+        Route::get('-renewal', [RenewalClearance::class, 'index'])->name('business-clearance-renewal');
+        Route::post('-renewal', [RenewalClearance::class, 'store'])->name('submit-business-clearance-renewal');
         // real estate
-        Route::get('-forRealEstate', [ServiceController::class, 'BusinessForRealEstate'])->name('business-clearance-forrealestate');
-        Route::post('-forRealEstate', [ServiceController::class, 'SubmitFormBusinessForRealEstate'])->name('submit-business-clearance-forrealestate');
+        Route::get('-forRealEstate', [RealEstateClearance::class, 'index'])->name('business-clearance-forrealestate');
+        Route::post('-forRealEstate', [RealEstateClearance::class, 'store'])->name('submit-business-clearance-forrealestate');
     });
 
-    Route::get('/indigency-clearance', [ServiceController::class, 'Indigency'])->name('indigency-clearance');
-    Route::post('/indigency-clearance', [ServiceController::class, 'SubmitIndigencyForm'])->name('indigency-clearance-form');
+    Route::get('/indigency-clearance', [IndigencyClearance::class, 'index'])->name('indigency-clearance');
+    Route::post('/indigency-clearance', [IndigencyClearance::class, 'store'])->name('indigency-clearance-form');
 });

@@ -1,7 +1,8 @@
 <script setup>
 
-import { router, useForm } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
+import ReturnHomeButton from '@/components/ReturnHomeButton.vue';
+import { useForm } from '@inertiajs/vue3';
+import { onMounted } from 'vue'
 
 const props = defineProps({
     clearanceForm: {
