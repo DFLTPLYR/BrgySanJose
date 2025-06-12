@@ -45,14 +45,12 @@ class RealEstateClearance extends Controller
             'motherName' => 'required|string|max:100',
             'motherOccupation' => 'nullable|string|max:100',
             'latestPhoto' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'priorYear' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-            'financialState' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'taxDeclaration' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         DB::transaction(function () use ($validated, $request) {
             $latestPhoto = $request->file('latestPhoto')->store('latest_photos', 'public');
-            $priorYear = $request->file('dtiSec')->store('dtiSec', 'public');
-            $financialState = $request->file('contractLease')->store('contractLease', 'public');
+            $taxDeclaration = $request->file('taxDeclaration')->store('dtiSec', 'public');
 
             Clearance::create([
                 'clearance_type' => 'business_clearance',
@@ -79,16 +77,14 @@ class RealEstateClearance extends Controller
                 'additional_data' => [
                     'email' => $validated['email'],
                     'latestPhoto' => $latestPhoto,
-                    'priorYear' => $priorYear,
-                    'sketchBusiness' => $financialState,
+                    'taxDeclaration' => $taxDeclaration,
                     'business_clearance_type' => 'RealEstate',
                 ],
             ]);
 
             $embeddedImages = [
                 'latestPhoto' => storage_path("app/public/{$latestPhoto}"),
-                'priorYear' => storage_path("app/public/{$priorYear}"),
-                'financialState' => storage_path("app/public/{$financialState}"),
+                'taxDeclaration' => storage_path("app/public/{$taxDeclaration}"),
             ];
 
             $receiver = $validated['firstName'].' '.$validated['lastName'];

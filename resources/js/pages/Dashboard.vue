@@ -128,6 +128,34 @@ const showModal = (id) => {
     })
 }
 
+const formatClearanceType = (type) => {
+
+    switch (type.clearance_type) {
+        case "barangay_clearance":
+            return "Barangay";
+        case "business_clearance":
+            switch (type.additional_data?.business_clearance_type) {
+                case "new":
+                    return "New Business";
+                case "renewal":
+                    return "Renewal";
+                case "RealEstate":
+                    return "Real Estate";
+            }
+        case "fencing_clearance":
+            return "Fencing";
+        case "indigency_clearance":
+            return "Indigency";
+        case "water_and_electrical_clearance":
+            return "Water & Electrical";
+        case "working_clearance":
+            return "Working";
+        default:
+            return type.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()); // fallback
+    }
+};
+
+
 </script>
 
 <template>
@@ -167,7 +195,9 @@ const showModal = (id) => {
                                 {{ clearance.firstName + ' ' + clearance.lastName }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ clearance.clearance_type }}
+                                {{
+                                    formatClearanceType(clearance)
+                                }}
                             </td>
                             <td class="px-6 py-4">
                                 {{ clearance.created_at ? new Date(clearance.created_at).toLocaleDateString('en-US', {
