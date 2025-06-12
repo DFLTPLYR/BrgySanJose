@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Service;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ClearanceCopy;
 use App\Models\Clearance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class BarangayClearance extends Controller
@@ -44,37 +47,45 @@ class BarangayClearance extends Controller
             'validId' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $validIdPath = $request->file('validId')->store('valid_ids', 'public');
+        DB::transaction(function () use ($validated, $request) {
+            $validIdPath = $request->file('validId')->store('valid_ids', 'public');
+            // Create the clearance record
+            Clearance::create([
+                'clearance_type' => 'barangay_clearance',
+                'firstName' => $validated['firstName'],
+                'lastName' => $validated['lastName'],
+                'middleName' => $validated['middleName'],
+                'provincialAddress' => $validated['provincialAddress'],
+                'yearsInTagaytay' => $validated['yearsInTagaytay'],
+                'presentAddress' => $validated['presentAddress'],
+                'contactNumber' => $validated['contactNumber'],
+                'civilStatus' => $validated['civilStatus'],
+                'citizenship' => $validated['citizenship'],
+                'birthdate' => $validated['birthdate'],
+                'birthplace' => $validated['birthplace'],
+                'age' => $validated['age'],
+                'occupation' => $validated['occupation'],
+                'companyName' => $validated['companyName'],
+                'spouseName' => $validated['spouseName'] ?? null,
+                'spouseOccupation' => $validated['spouseOccupation'] ?? null,
+                'fatherName' => $validated['fatherName'],
+                'fatherOccupation' => $validated['fatherOccupation'] ?? null,
+                'motherName' => $validated['motherName'],
+                'motherOccupation' => $validated['motherOccupation'] ?? null,
+                'additional_data' => [
+                    'email' => $validated['email'],
+                    'validIdPath' => $validIdPath,
+                    'personalAppearance' => $validated['personalAppearance'],
+                ],
+            ]);
 
-        // Create the clearance record
-        Clearance::create([
-            'clearance_type' => 'barangay_clearance',
-            'firstName' => $validated['firstName'],
-            'lastName' => $validated['lastName'],
-            'middleName' => $validated['middleName'],
-            'provincialAddress' => $validated['provincialAddress'],
-            'yearsInTagaytay' => $validated['yearsInTagaytay'],
-            'presentAddress' => $validated['presentAddress'],
-            'contactNumber' => $validated['contactNumber'],
-            'civilStatus' => $validated['civilStatus'],
-            'citizenship' => $validated['citizenship'],
-            'birthdate' => $validated['birthdate'],
-            'birthplace' => $validated['birthplace'],
-            'age' => $validated['age'],
-            'occupation' => $validated['occupation'],
-            'companyName' => $validated['companyName'],
-            'spouseName' => $validated['spouseName'] ?? null,
-            'spouseOccupation' => $validated['spouseOccupation'] ?? null,
-            'fatherName' => $validated['fatherName'],
-            'fatherOccupation' => $validated['fatherOccupation'] ?? null,
-            'motherName' => $validated['motherName'],
-            'motherOccupation' => $validated['motherOccupation'] ?? null,
-            'additional_data' => [
-                'email' => $validated['email'],
-                'validIdPath' => $validIdPath,
-                'personalAppearance' => $validated['personalAppearance'],
-            ],
-        ]);
+            $embeddedImages = [
+                'image1' => storage_path("app/public/{$validIdPath}"),
+            ];
+
+            // Send the email
+            Mail::to($validated['email'])->send(new ClearanceCopy($embeddedImages));
+        });
 
         return back()->with('success', 'Barangay clearance submitted successfully.');
     }
