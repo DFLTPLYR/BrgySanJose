@@ -38,12 +38,14 @@ onMounted(() => {
         return () => animate(el, { opacity: 0, y: -100 }, { duration: 1 })
     })
 })
+
+
 </script>
 
 <template>
     <Layout>
 
-        <Head title="Welcome" />
+        <Head title="Barangay Sanjose Tagaytay City" />
         <div>
             <!-- Hero Section -->
             <div class="hero relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center">

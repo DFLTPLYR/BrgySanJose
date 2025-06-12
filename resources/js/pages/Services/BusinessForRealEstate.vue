@@ -4,7 +4,7 @@ import ReturnHomeButton from '@/components/ReturnHomeButton.vue';
 import { router, useForm } from '@inertiajs/vue3';
 import Swal from 'sweetalert2';
 import { onMounted } from 'vue'
-
+import { Head } from '@inertiajs/vue3';
 const props = defineProps({
     clearanceForm: {
         type: Object,
@@ -82,6 +82,8 @@ function submitForm() {
 
 
 <template>
+
+    <Head title="For Real Estate" />
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col my-4 relative">
         <img src="/images/logo/logomain.png" alt="Barangay Logo" class="w-40 h-40 object-contain mx-auto mb-4" />
         <ReturnHomeButton />
@@ -176,7 +178,7 @@ function submitForm() {
                             *
                         </span>
                         <span class="text-red-600 text-xs" v-if="form.errors.contactNumber">{{ form.errors.contactNumber
-                        }}</span>
+                            }}</span>
                     </h2>
                     <input v-model="form.contactNumber" type="text"
                         class="w-full border border-[#0D98BA] rounded px-3 py-2" required />

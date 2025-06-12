@@ -3,7 +3,7 @@ import ReturnHomeButton from '@/components/ReturnHomeButton.vue';
 import { router, useForm } from '@inertiajs/vue3';
 import Swal from 'sweetalert2';
 import { onMounted } from 'vue'
-
+import { Head } from '@inertiajs/vue3';
 const props = defineProps({
     clearanceForm: {
         type: Object,
@@ -86,6 +86,8 @@ function handleFileUpload(event, key) {
 
 
 <template>
+
+    <Head title="Buildin Permit" />
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex flex-col my-4 relative">
         <img src="/images/logo/logomain.png" alt="Barangay Logo" class="w-40 h-40 object-contain mx-auto mb-4" />
         <ReturnHomeButton />
