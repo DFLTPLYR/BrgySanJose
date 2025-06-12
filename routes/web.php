@@ -7,6 +7,10 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
+Route::get('/news-and-events', function() {
+    return Inertia::render('NewsAndEvents');
+})->name('news-and-events');
+
 Route::get('/about-us', function () {
     return Inertia::render('AboutUs');
 })->name('about-us');
