@@ -219,12 +219,13 @@ function submitForm() {
                 <!-- Birthdate, Birthplace, Age -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Birthdate <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Birthdate <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.birthdate">{{
-                                    form.errors.birthdate
-                                }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.birthdate">{{
+                                form.errors.birthdate
+                                }}</span>
+                        </h2>
                         <input v-model="form.birthdate" type="date"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -333,12 +334,13 @@ function submitForm() {
                 <!-- Mother -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Mother's Name <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Mother's Name <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.motherName">{{
-                                    form.errors.motherName
-                                }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.motherName">{{
+                                form.errors.motherName
+                            }}</span>
+                        </h2>
                         <input v-model="form.motherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>

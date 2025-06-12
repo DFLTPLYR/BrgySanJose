@@ -18,5 +18,5 @@
 
 
     Thanks,<br>
-    {{ config('app.name') }}
+    Barangay San Jose Tagaytay City
 </x-mail::message>

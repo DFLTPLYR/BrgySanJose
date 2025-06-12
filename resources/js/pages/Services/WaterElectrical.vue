@@ -225,7 +225,7 @@ function submitForm() {
                             </span>
                             <span class="text-red-600 text-xs" v-if="form.errors.birthdate">{{
                                 form.errors.birthdate
-                                }}</span>>
+                                }}</span>
                         </h2>
                         <input v-model="form.birthdate" type="date"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />

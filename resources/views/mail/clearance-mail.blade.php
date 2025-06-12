@@ -1,7 +1,6 @@
-<x-mail::message>@isset($receiver)
-    # Hello <h2> {{ $receiver }} </h2>, Thank you for Applying to our Clearance
-    # This is the copy of what you send:
-    @endisset
+<x-mail::message>
+    # Hello Thank you for applying to our Clearance
+
 
     @isset($clearanceType)
     <h1> {{ $clearanceType }} </h1>
@@ -20,12 +19,10 @@
     @endforeach
     @endisset
 
-    <x-mail::button :url="''">
+    <!-- <x-mail::button :url="''">
         Button Text
-    </x-mail::button>
+    </x-mail::button> -->
 
     Thanks,<br>
-    @isset($receiver)
-    <h1> {{ $receiver }} </h1>
-    @endisset
+    {{ config('app.name') }}
 </x-mail::message>

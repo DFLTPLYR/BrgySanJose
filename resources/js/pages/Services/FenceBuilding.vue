@@ -290,12 +290,13 @@ function handleFileUpload(event, key) {
                 <!-- Spouse -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Name of Spouse <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Name of Spouse <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.spouseName">{{
-                                    form.errors.spouseName
-                                    }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.spouseName">{{
+                                form.errors.spouseName
+                                }}</span>
+                        </h2>
                         <input v-model="form.spouseName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -315,12 +316,13 @@ function handleFileUpload(event, key) {
                 <!-- Father -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Father's Name <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Father's Name <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.fatherName">{{
-                                    form.errors.fatherName
-                                    }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.fatherName">{{
+                                form.errors.fatherName
+                            }}</span>
+                        </h2>
                         <input v-model="form.fatherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
