@@ -1,7 +1,13 @@
 <x-mail::message>
 # Introduction
 
-The body of your message.
+@isset($clearanceType)
+<h1> {{ $clearanceType }} </h1>
+@endisset
+
+@isset($receiver)
+<h1> {{ $receiver }} </h1>
+@endisset
 
 @isset($embeddedImages)
 @foreach($embeddedImages as $cid => $imagePath)
