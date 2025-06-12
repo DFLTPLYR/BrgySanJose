@@ -233,12 +233,13 @@ onMounted(() => {
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Birthplace <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Birthplace <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.birthplace">{{
-                                    form.errors.birthplace
-                                }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.birthplace">{{
+                                form.errors.birthplace
+                                }}</span>
+                        </h2>
                         <input v-model="form.birthplace" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -291,12 +292,13 @@ onMounted(() => {
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Spouse Occupation <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Spouse Occupation <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.spouseOccupation">{{
-                                    form.errors.spouseOccupation
-                                }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.spouseOccupation">{{
+                                form.errors.spouseOccupation
+                            }}</span>
+                        </h2>
                         <input v-model="form.spouseOccupation" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
@@ -330,12 +332,13 @@ onMounted(() => {
                 <!-- Mother -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h2 class="text-lg font-semibold mb-2">Mother's Name <<span class="text-xs text-red-400">
+                        <h2 class="text-lg font-semibold mb-2">Mother's Name <span class="text-xs text-red-400">
                                 *
-                                </span>
-                                <span class="text-red-600 text-xs" v-if="form.errors.motherName">{{
-                                    form.errors.motherName
-                                }}</span></h2>
+                            </span>
+                            <span class="text-red-600 text-xs" v-if="form.errors.motherName">{{
+                                form.errors.motherName
+                            }}</span>
+                        </h2>
                         <input v-model="form.motherName" type="text"
                             class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                     </div>
