@@ -1,28 +1,28 @@
-<x-mail::message>
-    # Hello Thank you for applying to our Clearance
+@component('mail::message')
+# Hello, thank you for applying for our Clearance
 
+@isset($receiver)
+**Clearance Type:**
+{{ $receiver }}
+@endisset
 
-    @isset($clearanceType)
-    <h1> {{ $clearanceType }} </h1>
-    @endisset
+@isset($clearanceType)
+**Receiver:**
+{{ $clearanceType }}
+@endisset
 
-    @isset($receiver)
-    <h1> {{ $receiver }} </h1>
-    @endisset
+@isset($embeddedImages)
+@foreach($embeddedImages as $cid => $imagePath)
+<div style="margin: 10px 0;">
+    <img src="{{ $message->embed($imagePath) }}" alt="Embedded Image" style="max-width: 100%;">
+</div>
+@endforeach
+@endisset
 
+<div style="margin-top: 32px; text-align: center;">
+    <img src="{{ $message->embed(public_path('/images/logo/logomain.png')) }}" alt="Barangay San Jose Tagaytay City Logo" style="height: 80px;">
+</div>
 
-    @isset($embeddedImages)
-    @foreach($embeddedImages as $cid => $imagePath)
-    <div>
-        <img src="{{ $message->embed($imagePath) }}" alt="Embedded Image">
-    </div>
-    @endforeach
-    @endisset
-
-    <!-- <x-mail::button :url="''">
-        Button Text
-    </x-mail::button> -->
-
-    Thanks,<br>
-    {{ config('app.name') }}
-</x-mail::message>
+Thanks,<br>
+Barangay San Jose Tagaytay City
+@endcomponent
