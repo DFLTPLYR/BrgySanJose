@@ -47,7 +47,7 @@ class ClearanceController extends Controller
 
         $clearance->update(['status' => $status]);
 
-        return response()->noContent();
+        return redirect()->back();
     }
 
     public function destroy(Clearance $clearance)

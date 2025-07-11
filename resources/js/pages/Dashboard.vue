@@ -70,9 +70,6 @@ const updateStatus = async (id, newStatus) => {
         await router.visit(route('clearance.updateStatus', { clearance: id }), {
             method: 'put',
             data: { status: statusMap[newStatus.toLowerCase()] },
-            headers: {
-                'X-Inertia': false
-            },
             onCancelToken: () => {},
             onCancel: () => {},
             onError: () => {
