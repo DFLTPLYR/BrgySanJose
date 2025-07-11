@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <title inertia>{{ config('app.name', 'Barangay San Jose Tagaytay City') }}</title>
 
     <link rel="icon" href="images/logo/logomain.png" sizes="any">
     <link rel="icon" href="images/logo/logomain.png" type="image/svg+xml">

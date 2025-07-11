@@ -10,17 +10,14 @@ use Illuminate\Queue\SerializesModels;
 
 class ClearanceMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     public $embeddedImages;
-
     public $clearanceType;
-
     public $receiver;
+    public $logoCid;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(array $embeddedImages, string $clearanceType, string $receiver)
     {
         $this->embeddedImages = $embeddedImages;
@@ -28,9 +25,6 @@ class ClearanceMail extends Mailable
         $this->receiver = $receiver;
     }
 
-    /**
-     * Get the message envelope.
-     */
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -38,9 +32,6 @@ class ClearanceMail extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -49,15 +40,21 @@ class ClearanceMail extends Mailable
                 'embeddedImages' => $this->embeddedImages,
                 'clearanceType' => $this->clearanceType,
                 'receiver' => $this->receiver,
+                'logoCid' => $this->logoCid ?? null,
             ]
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
+    // ✅ This is only to embed the image
+    public function build()
+    {
+        $this->withSymfonyMessage(function ($message) {
+            $this->logoCid = $message->embed(public_path('images/logo/logomain.png'));
+        });
+
+        return $this;
+    }
+
     public function attachments(): array
     {
         return [];

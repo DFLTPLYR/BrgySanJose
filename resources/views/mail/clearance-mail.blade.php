@@ -1,4 +1,9 @@
 @component('mail::message')
+
+<div style="margin-top: 32px; text-align: center; user-select: none;">
+    <img src="{{ $message->embed(public_path('/images/logo/logomain.png')) }}" alt="Barangay San Jose Tagaytay City Logo" style="height: 80px;">
+</div>
+
 # Hello, thank you for applying for our Clearance
 
 @isset($receiver)
@@ -19,9 +24,6 @@
 @endforeach
 @endisset
 
-<div style="margin-top: 32px; text-align: center;">
-    <img src="{{ $message->embed(public_path('/images/logo/logomain.png')) }}" alt="Barangay San Jose Tagaytay City Logo" style="height: 80px;">
-</div>
 
 Thanks,<br>
 Barangay San Jose Tagaytay City
