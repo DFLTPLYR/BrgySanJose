@@ -41,7 +41,7 @@ const form = useForm({
     fatherOccupation: null,
     motherName: null,
     motherOccupation: null,
-    personalAppearance: false,
+    personalAppearance: true,
     validId: null,
     email: null,
 });
@@ -132,11 +132,12 @@ onMounted(() => {
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
                         <div>
-                            <label class="block text-gray-700 mb-1">Middle Name
-                                <span class="text-red-600 text-xs" v-if="form.errors.middleName">{{
-                                    form.errors.middleName
+                            <label class="block text-gray-700 mb-1">Middle Name <span class="text-xs text-red-400">
+                                    *
+                                </span>
+                                <span class="text-red-600 text-xs" v-if="form.errors.firstName">{{ form.errors.middleName
                                 }}</span></label>
-                            <input v-model="form.middleName" type="text"
+                            <input v-model="form.firstName" type="text"
                                 class="w-full border border-[#0D98BA] rounded px-3 py-2" required />
                         </div>
                     </div>
@@ -357,16 +358,16 @@ onMounted(() => {
                 <!-- Requirements -->
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-gray-700 mb-2">
-                            <input type="checkbox" v-model="form.personalAppearance" class="mr-2" />
-                            Personal Appearance <span class="text-xs text-red-400">
-                                *
-                            </span>
-                            <span class="text-red-600 text-xs" v-if="form.errors.personalAppearance">{{
-                                form.errors.personalAppearance
-                            }}</span>
-
-                        </label>
+                       <label class="block text-gray-700 mb-2 select-none">
+    <input
+        type="checkbox"
+        v-model="form.personalAppearance"
+        :checked="true"
+        disabled
+        class="mr-2"
+    />
+    Personal Appearance <span class="text-xs text-red-400">*</span>
+</label>
                     </div>
                     <div>
                         <label class="block text-gray-700 mb-2 font-semibold">

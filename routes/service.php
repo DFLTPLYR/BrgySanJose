@@ -45,4 +45,6 @@ Route::prefix('/service')->group(function () {
     Route::post('/indigency-clearance', [IndigencyClearance::class, 'store'])->name('indigency-clearance-form');
 
     Route::post('/sendMail', [ServiceController::class, 'sendMail'])->name("sendMail");
+
+    Route::post('/sendMail', [ServiceController::class, 'sendMail'])->name("sendMail");
 });

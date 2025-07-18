@@ -20,6 +20,7 @@ const sort = ref({
 });
 
 const activeDropdown = ref(null);
+const deletingId = ref(null);
 
 const toggleDropdown = (id) => {
     activeDropdown.value = activeDropdown.value === id ? null : id;
@@ -48,8 +49,6 @@ onBeforeUnmount(() => {
     document.removeEventListener('click', handleClickOutside);
 });
 
-
-
 const updateStatus = async (id, newStatus) => {
     const clearanceToUpdate = props.Clearance.find(c => c.id === id);
     if (!clearanceToUpdate) return;
@@ -61,22 +60,18 @@ const updateStatus = async (id, newStatus) => {
             approved: 'completed',
             pending: 'pending',
             rejected: 'reject'
-        };
+        }[newStatus.toLowerCase()];
 
         clearanceToUpdate.status = newStatus;
         activeDropdown.value = null;
 
-        // ✅ Use `router.visit` with `X-Inertia: false` to avoid JSON response popup
         await router.visit(route('clearance.updateStatus', { clearance: id }), {
             method: 'put',
-            data: { status: statusMap[newStatus.toLowerCase()] },
-            onCancelToken: () => {},
-            onCancel: () => {},
+            data: { status: statusMap },
             onError: () => {
                 clearanceToUpdate.status = originalStatus;
                 Swal.fire('Error!', 'Failed to update status', 'error');
-            },
-            onFinish: () => {}
+            }
         });
     } catch (error) {
         clearanceToUpdate.status = originalStatus;
@@ -84,11 +79,11 @@ const updateStatus = async (id, newStatus) => {
     }
 };
 
-
-
 const switchDateSort = () => {
     sort.value.date = sort.value.date === 'Asc' ? 'Desc' : 'Asc';
 };
+
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const sortedClearances = computed(() => {
     let sorted = [...props.Clearance].sort((a, b) => {
@@ -97,8 +92,8 @@ const sortedClearances = computed(() => {
         return sort.value.date === 'Asc' ? dateA - dateB : dateB - dateA;
     });
 
-    if (sort.value.search.trim() !== "") {
-        const query = sort.value.search.toLowerCase();
+    if (sort.value.search.trim()) {
+        const query = sort.value.search.trim().toLowerCase();
         sorted = sorted.filter((clearance) => {
             const fullName = `${clearance.firstName} ${clearance.lastName}`.toLowerCase();
             return fullName.includes(query);
@@ -152,9 +147,14 @@ const showModal = (id) => {
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
+            deletingId.value = id;
             router.delete(route('clearance.destroy', id), {
                 onSuccess: () => {
+                    deletingId.value = null;
                     Swal.fire('Deleted!', '', 'success');
+                },
+                onError: () => {
+                    deletingId.value = null;
                 }
             });
         }
@@ -193,19 +193,27 @@ const formatClearanceType = (type) => {
 
             <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Status</label>
-                    <button
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Type</label>
+                    <select v-model="sort.type"
                         class="px-4 py-2 bg-gray-100 rounded-md border border-gray-200 text-gray-700 font-medium shadow-sm hover:bg-gray-200 transition">
-                        {{ sort.status }}
-                    </button>
+                        <option value="All">All</option>
+                        <option value="barangay_clearance">Barangay</option>
+                        <option value="business_clearance">Business</option>
+                        <option value="working_clearance">Working</option>
+                        <option value="fencing_clearance">Fencing</option>
+                        <option value="indigency_clearance">Indigency</option>
+                        <option value="water_and_electrical_clearance">Water & Electrical</option>
+                    </select>
                 </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Sort by Date</label>
                     <button @click="switchDateSort"
                         class="px-4 py-2 bg-blue-100 rounded-md border border-blue-200 text-blue-700 font-medium shadow-sm hover:bg-blue-200 transition">
-                        {{ sort.date === 'Asc' ? 'Oldest First' : 'Newest First' }}
+                        {{ sort.date === 'Asc' ? '↑ Oldest First' : '↓ Newest First' }}
                     </button>
                 </div>
+
                 <div class="flex-1">
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Search Name</label>
                     <input type="text" v-model="sort.search" placeholder="Search by name..."
@@ -220,7 +228,11 @@ const formatClearanceType = (type) => {
                             <th class="px-6 py-3">ID</th>
                             <th class="px-6 py-3">Name</th>
                             <th class="px-6 py-3">Clearance Type</th>
-                            <th class="px-6 py-3">Date</th>
+                            <th class="px-6 py-3 cursor-pointer" @click="switchDateSort">
+                                Date
+                                <span v-if="sort.date === 'Asc'">▲</span>
+                                <span v-else>▼</span>
+                            </th>
                             <th class="px-6 py-3">Status</th>
                             <th class="px-6 py-3">Actions</th>
                         </tr>
@@ -228,15 +240,9 @@ const formatClearanceType = (type) => {
                     <tbody>
                         <tr v-for="clearance in sortedClearances" :key="clearance.id"
                             class="border-b hover:bg-gray-100 transition">
-                            <td class="px-6 py-4 font-semibold text-gray-900">
-                                {{ clearance.id }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ clearance.firstName + ' ' + clearance.lastName }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ formatClearanceType(clearance) }}
-                            </td>
+                            <td class="px-6 py-4 font-semibold text-gray-900">{{ clearance.id }}</td>
+                            <td class="px-6 py-4">{{ clearance.firstName + ' ' + clearance.lastName }}</td>
+                            <td class="px-6 py-4">{{ formatClearanceType(clearance) }}</td>
                             <td class="px-6 py-4">
                                 {{ clearance.created_at ? new Date(clearance.created_at).toLocaleDateString('en-US', {
                                     month: 'short', day: 'numeric', year: 'numeric'
@@ -253,7 +259,7 @@ const formatClearanceType = (type) => {
                                             'bg-red-100 text-red-700 hover:bg-red-200': clearance.status.toLowerCase() === 'rejected'
                                         }"
                                     >
-                                        {{ clearance.status.charAt(0).toUpperCase() + clearance.status.slice(1) }}
+                                        {{ capitalize(clearance.status) }}
                                     </div>
                                     <div
                                         v-if="activeDropdown === clearance.id"
@@ -263,35 +269,33 @@ const formatClearanceType = (type) => {
                                         <button
                                             @click.stop="updateStatus(clearance.id, 'approved')"
                                             class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition"
-                                            :class="{'opacity-50': clearance.status.toLowerCase() === 'approved'}"
+                                            :class="{ 'opacity-50': clearance.status.toLowerCase() === 'approved' }"
                                         >
                                             Approve
                                         </button>
                                         <button
                                             @click.stop="updateStatus(clearance.id, 'rejected')"
                                             class="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition"
-                                            :class="{'opacity-50': clearance.status.toLowerCase() === 'rejected'}"
+                                            :class="{ 'opacity-50': clearance.status.toLowerCase() === 'rejected' }"
                                         >
                                             Decline
                                         </button>
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <span :class="{
-                                        'px-2 py-1 rounded text-xs font-bold': true,
-                                        'bg-gray-100 text-gray-700': true
-                                    }">
-                                        {{ clearance.status.charAt(0).toUpperCase() + clearance.status.slice(1) }}
+                                    <span class="px-2 py-1 rounded text-xs font-bold bg-gray-100 text-gray-700">
+                                        {{ capitalize(clearance.status) }}
                                     </span>
                                 </template>
                             </td>
                             <td class="px-6 py-4 space-x-2">
                                 <Link :href="getEditLink(clearance)"
                                     class="inline-block px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                                Edit
+                                    Edit
                                 </Link>
                                 <button @click="showModal(clearance.id)"
-                                    class="inline-block px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                                    :disabled="deletingId === clearance.id"
+                                    class="inline-block px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition disabled:opacity-50"
                                     v-if="['Admin', 'SuperAdmin'].includes(page.props.auth.role)">
                                     Delete
                                 </button>
@@ -307,3 +311,4 @@ const formatClearanceType = (type) => {
         </div>
     </Layout>
 </template>
+

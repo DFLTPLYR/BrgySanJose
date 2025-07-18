@@ -1,42 +1,94 @@
+
 <script setup>
-import { useForm } from '@inertiajs/vue3'
+import { useForm, Head, router, usePage } from '@inertiajs/vue3'
+import { ref } from 'vue'
 
+// Show/hide password toggle
+const showPassword = ref(false)
+
+// Access flash messages from Laravel
+const page = usePage()
+const flash = page.props.flash
+
+// Form data
 const form = useForm({
-    username: '',
-    password: ''
-});
+  username: '',
+  password: '',
+  remember: false,
+})
 
-function handleLogin() {
-    form.post(route('login'), {
-        errorBag: "auth.failed",
-    })
+// Handle login
+const handleLogin = () => {
+  form.post(route('login'), {
+    onSuccess: () => {
+      router.visit(route('dashboard')) // Adjust route name if needed
+    },
+    onError: () => {
+      // Errors are already handled below
+    },
+  })
 }
-
 </script>
 
 <template>
-    <div class="flex items-center justify-center min-h-screen bg-transparent">
-        <form @submit.prevent="handleLogin" class="bg-white p-6 rounded shadow-md w-full max-w-sm">
-            <h2 class="text-xl font-bold mb-4 text-green-700">Barangay Official Login</h2>
+  <div class="flex items-center justify-center min-h-screen bg-green-600">
+    <Head title="Official Login" />
 
-            <input v-model="form.username" placeholder="Username"
-                :class="!form.errors.username ? 'border-green-400 border' : 'border-red-400 border-2'"
-                class="w-full p-2 mb-3 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-                autocomplete="username" required />
+    <form @submit.prevent="handleLogin" autocomplete="off" class="bg-white p-6 rounded shadow-md w-full max-w-sm">
+      <h2 class="text-xl font-bold mb-4 text-green-700 text-center">Barangay Official Login</h2>
 
-            <input v-model="form.password" type="password" placeholder="Password"
-                :class="{ 'ring-red-500': form.errors.password }"
-                class="w-full p-2 border border-green-400 mb-3 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-                autocomplete="current-password" required />
-            <button type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white p-2 rounded transition-colors duration-200">
-                Login
-            </button>
-            <p v-if="form.errors" class="text-red-500 mt-2">
-                <template v-for="err in form.errors">
-                    {{ err }}
-                </template>
-            </p>
-        </form>
-    </div>
+      <!-- Flash message -->
+      <div v-if="flash?.message" class="bg-green-100 text-green-800 text-sm p-3 rounded mb-3">
+        {{ flash.message }}
+      </div>
+
+      <!-- Error messages -->
+      <div v-if="form.hasErrors" class="bg-red-100 text-red-800 text-sm p-3 rounded mb-3">
+        <div v-for="(error, key) in form.errors" :key="key">{{ error }}</div>
+      </div>
+
+      <!-- Username -->
+      <input
+        v-model="form.username"
+        type="text"
+        placeholder="Username"
+        required
+        class="w-full p-2 border border-green-400 rounded mb-3 focus:ring-2 focus:ring-green-500 focus:outline-none"
+      />
+
+      <!-- Password with toggle -->
+      <div class="relative mb-3">
+        <input
+          :type="showPassword ? 'text' : 'password'"
+          v-model="form.password"
+          placeholder="Password"
+          required
+          class="w-full p-2 border border-green-400 rounded focus:ring-2 focus:ring-green-500 focus:outline-none pr-10"
+        />
+        <button
+          type="button"
+          @click="showPassword = !showPassword"
+          class="absolute right-2 top-2 text-sm text-gray-600"
+        >
+          {{ showPassword ? '🙈 Hide' : '👁️ Show' }}
+        </button>
+      </div>
+
+      <!-- Remember Me -->
+      <label class="flex items-center text-sm mb-4 text-gray-700">
+        <input type="checkbox" v-model="form.remember" class="mr-2" />
+        Remember Me
+      </label>
+
+      <!-- Login Button -->
+      <button
+        type="submit"
+        :disabled="form.processing"
+        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition"
+      >
+        {{ form.processing ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+  </div>
 </template>
+

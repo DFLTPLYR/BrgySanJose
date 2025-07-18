@@ -11,6 +11,9 @@ use Inertia\Inertia;
 
 class AuthenticatedSessionController extends Controller
 {
+    /**
+     * Show the login page.
+     */
     public function create()
     {
         return Inertia::render('LogIn');
@@ -21,16 +24,21 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-
+        // Handles auth & remember me logic
         $request->authenticate();
 
+        // Regenerate session to prevent fixation
         $request->session()->regenerate();
 
+        // Flash a success message to be displayed in Vue
+        $request->session()->flash('success', 'Welcome back!');
+
+        // Redirect to intended page or dashboard
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
-     * Destroy an authenticated session.
+     * Logout and destroy session.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -42,3 +50,4 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(route('home', absolute: true));
     }
 }
+

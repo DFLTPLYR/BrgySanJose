@@ -133,6 +133,9 @@ function handleFileUpload(event, key) {
                         </div>
                         <div>
                             <label class="block text-gray-700 mb-1">Middle Name
+<span class="text-xs text-red-400">
+                                    *
+                                </span>
 
                                 <span class="text-red-600 text-xs" v-if="form.errors.middleName">{{
                                     form.errors.middleName
