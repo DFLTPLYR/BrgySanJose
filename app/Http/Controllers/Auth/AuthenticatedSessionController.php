@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,6 +18,17 @@ class AuthenticatedSessionController extends Controller
     public function create()
     {
         return Inertia::render('LogIn');
+    }
+
+    public function GoogleLogin()
+    {
+        return Socialite::driver('google')->stateless()->user();
+    }
+
+    public function GoogleCallback()
+    {
+        $gUser = Socialite::driver("google")->stateless()->user();
+        dd($gUser);
     }
 
     /**
@@ -50,4 +62,3 @@ class AuthenticatedSessionController extends Controller
         return redirect()->intended(route('home', absolute: true));
     }
 }
-
