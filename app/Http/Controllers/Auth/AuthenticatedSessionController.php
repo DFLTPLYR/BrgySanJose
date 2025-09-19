@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use App\Models\UserData;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,13 +24,43 @@ class AuthenticatedSessionController extends Controller
 
     public function GoogleLogin()
     {
-        return Socialite::driver('google')->stateless()->user();
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
     public function GoogleCallback()
     {
-        $gUser = Socialite::driver("google")->stateless()->user();
-        dd($gUser);
+        try {
+            $gUser = Socialite::driver("google")->stateless()->user();
+
+            // Since the User model doesn't have email field,
+            // we'll use the Google email as username
+            $googleEmail = $gUser->getEmail();
+
+            // Find or create user based on Google email as username
+            $user = User::where('username', $googleEmail)->first();
+
+            if (!$user) {
+                // Create new user if doesn't exist
+                $user = User::create([
+                    'username' => $googleEmail,
+                    'role' => 'Resident', // Default role as per migration
+                ]);
+
+                UserData::create([
+                    'user_id' => $user->id,
+                    'information' => $gUser->user
+                ]);
+            }
+            dd($user->getUserData);
+            // Log the user in
+            Auth::login($user);
+
+            // Redirect to dashboard or intended page
+            return redirect()->intended('/');
+        } catch (\Exception $e) {
+            // Handle OAuth errors
+            return redirect('/login')->with('error', 'Google authentication failed. Please try again.');
+        }
     }
 
     /**
