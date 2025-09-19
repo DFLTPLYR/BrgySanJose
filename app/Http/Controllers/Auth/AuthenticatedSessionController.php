@@ -29,38 +29,32 @@ class AuthenticatedSessionController extends Controller
 
     public function GoogleCallback()
     {
-        try {
-            $gUser = Socialite::driver("google")->stateless()->user();
+        $gUser = Socialite::driver("google")->stateless()->user();
 
-            // Since the User model doesn't have email field,
-            // we'll use the Google email as username
-            $googleEmail = $gUser->getEmail();
+        // Since the User model doesn't have email field,
+        // we'll use the Google email as username
+        $googleEmail = $gUser->getEmail();
 
-            // Find or create user based on Google email as username
-            $user = User::where('username', $googleEmail)->first();
+        // Find or create user based on Google email as username
+        $user = User::where('username', $googleEmail)->first();
 
-            if (!$user) {
-                // Create new user if doesn't exist
-                $user = User::create([
-                    'username' => $googleEmail,
-                    'role' => 'Resident',
-                ]);
-
-                UserData::create([
-                    'user_id' => $user->id,
-                    'information' => $gUser->user
-                ]);
-            }
-            dd($user);
-            // Log the user in
-            // Auth::login($user);
-
-            // Redirect to dashboard or intended page
-            // return redirect()->intended('/');
-        } catch (\Exception $e) {
-            // Handle OAuth errors
-            return redirect('/login')->with('error', 'Google authentication failed. Please try again.');
+        if (!$user) {
+            // Create new user if doesn't exist
+            $user = User::create([
+                'username' => $googleEmail,
+                'role' => 'Resident',
+            ]);
         }
+
+        UserData::updateOrCreate(
+            ['user_id' => $user->id],
+            ['information' => $gUser->user]
+        );
+
+        Auth::login($user);
+
+        // Redirect to dashboard or intended page
+        return redirect()->intended('/');
     }
 
     /**
