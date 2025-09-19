@@ -21,6 +21,7 @@ return new class extends Migration
                 'SuperAdmin',
                 'Resident'
             ])->default('Resident');
+            $table->boolean("isVerified")->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

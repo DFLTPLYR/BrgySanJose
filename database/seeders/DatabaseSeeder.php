@@ -17,18 +17,21 @@ class DatabaseSeeder extends Seeder
         User::create([
             'username' => 'Official',
             'password' => Hash::make('password123'),
+            'isVerified' => true
         ]);
 
         User::create([
             'username' => 'Admin',
             'password' => Hash::make('password123'),
-            'role' => 'Admin'
+            'role' => 'Admin',
+            'isVerified' => true,
         ]);
 
         User::create([
             'username' => 'SuperAdmin',
             'password' => Hash::make('password123'),
-            'role' => 'SuperAdmin'
+            'role' => 'SuperAdmin',
+            'isVerified' => true
         ]);
     }
 }
