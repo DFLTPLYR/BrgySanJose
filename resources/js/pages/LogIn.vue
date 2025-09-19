@@ -1,4 +1,3 @@
-
 <script setup>
 import { useForm, Head, router, usePage } from '@inertiajs/vue3'
 import { ref } from 'vue'
@@ -12,83 +11,75 @@ const flash = page.props.flash
 
 // Form data
 const form = useForm({
-  username: '',
-  password: '',
-  remember: false,
+    username: '',
+    password: '',
+    remember: false,
 })
 
 // Handle login
 const handleLogin = () => {
-  form.post(route('login'), {
-    onSuccess: () => {
-      router.visit(route('dashboard')) // Adjust route name if needed
-    },
-    onError: () => {
-      // Errors are already handled below
-    },
-  })
+    form.post(route('login'), {
+        onSuccess: () => {
+            router.visit(route('dashboard')) // Adjust route name if needed
+        },
+        onError: () => {
+            // Errors are already handled below
+        },
+    })
 }
 </script>
 
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-green-600">
-    <Head title="Official Login" />
+    <div class="flex items-center justify-center min-h-screen bg-green-600">
 
-    <form @submit.prevent="handleLogin" autocomplete="off" class="bg-white p-6 rounded shadow-md w-full max-w-sm">
-      <h2 class="text-xl font-bold mb-4 text-green-700 text-center">Barangay Official Login</h2>
+        <Head title="Official Login" />
 
-      <!-- Flash message -->
-      <div v-if="flash?.message" class="bg-green-100 text-green-800 text-sm p-3 rounded mb-3">
-        {{ flash.message }}
-      </div>
+        <form @submit.prevent="handleLogin" autocomplete="off" class="bg-white p-6 rounded shadow-md w-full max-w-sm">
+            <h2 class="text-xl font-bold mb-4 text-green-700 text-center">Barangay Official Login</h2>
 
-      <!-- Error messages -->
-      <div v-if="form.hasErrors" class="bg-red-100 text-red-800 text-sm p-3 rounded mb-3">
-        <div v-for="(error, key) in form.errors" :key="key">{{ error }}</div>
-      </div>
+            <!-- Flash message -->
+            <div v-if="flash?.message" class="bg-green-100 text-green-800 text-sm p-3 rounded mb-3">
+                {{ flash.message }}
+            </div>
 
-      <!-- Username -->
-      <input
-        v-model="form.username"
-        type="text"
-        placeholder="Username"
-        required
-        class="w-full p-2 border border-green-400 rounded mb-3 focus:ring-2 focus:ring-green-500 focus:outline-none"
-      />
+            <!-- Error messages -->
+            <div v-if="form.hasErrors" class="bg-red-100 text-red-800 text-sm p-3 rounded mb-3">
+                <div v-for="(error, key) in form.errors" :key="key">{{ error }}</div>
+            </div>
 
-      <!-- Password with toggle -->
-      <div class="relative mb-3">
-        <input
-          :type="showPassword ? 'text' : 'password'"
-          v-model="form.password"
-          placeholder="Password"
-          required
-          class="w-full p-2 border border-green-400 rounded focus:ring-2 focus:ring-green-500 focus:outline-none pr-10"
-        />
-        <button
-          type="button"
-          @click="showPassword = !showPassword"
-          class="absolute right-2 top-2 text-sm text-gray-600"
-        >
-          {{ showPassword ? '🙈 Hide' : '👁️ Show' }}
-        </button>
-      </div>
+            <!-- Username -->
+            <input v-model="form.username" type="text" placeholder="Username" required
+                class="w-full p-2 border border-green-400 rounded mb-3 focus:ring-2 focus:ring-green-500 focus:outline-none" />
 
-      <!-- Remember Me -->
-      <label class="flex items-center text-sm mb-4 text-gray-700">
-        <input type="checkbox" v-model="form.remember" class="mr-2" />
-        Remember Me
-      </label>
+            <!-- Password with toggle -->
+            <div class="relative mb-3">
+                <input :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="Password"
+                    required
+                    class="w-full p-2 border border-green-400 rounded focus:ring-2 focus:ring-green-500 focus:outline-none pr-10" />
+                <button type="button" @click="showPassword = !showPassword"
+                    class="absolute right-2 top-2 text-sm text-gray-600">
+                    {{ showPassword ? '🙈 Hide' : '👁️ Show' }}
+                </button>
+            </div>
 
-      <!-- Login Button -->
-      <button
-        type="submit"
-        :disabled="form.processing"
-        class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition"
-      >
-        {{ form.processing ? 'Logging in...' : 'Login' }}
-      </button>
-    </form>
-  </div>
+            <!-- Remember Me -->
+            <label class="flex items-center text-sm mb-4 text-gray-700">
+                <input type="checkbox" v-model="form.remember" class="mr-2" />
+                Remember Me
+            </label>
+
+            <!-- Login Button -->
+            <button type="submit" :disabled="form.processing"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+                {{ form.processing ? 'Logging in...' : 'Login' }}
+            </button>
+        </form>
+
+
+        <!-- Google OAuth Login -->
+        <a :href="route('login.google')"
+            class="mt-4 w-full max-w-sm bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition text-center block">
+            Login with Google
+        </a>
+    </div>
 </template>
-
