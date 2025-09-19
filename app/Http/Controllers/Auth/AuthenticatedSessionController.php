@@ -43,7 +43,7 @@ class AuthenticatedSessionController extends Controller
                 // Create new user if doesn't exist
                 $user = User::create([
                     'username' => $googleEmail,
-                    'role' => 'Resident', // Default role as per migration
+                    'role' => 'Resident',
                 ]);
 
                 UserData::create([
@@ -51,12 +51,12 @@ class AuthenticatedSessionController extends Controller
                     'information' => $gUser->user
                 ]);
             }
-            dd($user->getUserData);
+            dd($user);
             // Log the user in
-            Auth::login($user);
+            // Auth::login($user);
 
             // Redirect to dashboard or intended page
-            return redirect()->intended('/');
+            // return redirect()->intended('/');
         } catch (\Exception $e) {
             // Handle OAuth errors
             return redirect('/login')->with('error', 'Google authentication failed. Please try again.');
