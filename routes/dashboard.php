@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Clearance;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,6 +15,11 @@ Route::prefix("/dashboard")->group(function () {
     })->name('clearance');
 
     Route::get('/accounts', function () {
-        return Inertia::render('Accounts', ['Clearance' => Clearance::all()]);
+        $pendingAccounts = User::where([
+            ["role", "=", "Resident"],
+            ["isVerified", "=", false]
+        ])->get();
+
+        return Inertia::render('Accounts', ['pendingUser' => $pendingAccounts]);
     })->name('accounts');
 });
