@@ -1,5 +1,9 @@
 <script setup>
 import Layout from '@/layouts/Layout.vue';
+
+const props = defineProps({
+    Clearance: Array
+});
 </script>
 
 <template>
