@@ -40,6 +40,7 @@ const goToSection = (elementId) => {
 
 onMounted(() => {
     const hash = window.location.hash?.substring(1)
+    console.log(usePage().props)
     if (hash) {
         // wait for DOM to load
         setTimeout(() => {

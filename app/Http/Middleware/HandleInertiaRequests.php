@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => Auth::check() ? $request->user() : null,
+            'isUserVerified' => Auth::check() ? !!Auth::user()->isVerified : false,
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
