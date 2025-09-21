@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
     public function GoogleCallback()
     {
         $gUser = Socialite::driver("google")->stateless()->user();
-
+        dd($gUser);
         // Since the User model doesn't have email field,
         // we'll use the Google email as username
         $googleEmail = $gUser->getEmail();
@@ -41,6 +41,8 @@ class AuthenticatedSessionController extends Controller
         if (!$user) {
             // Create new user if doesn't exist
             $user = User::create([
+                'name' => $gUser->name,
+                'email' =>  $googleEmail,
                 'username' => $googleEmail,
                 'role' => 'Resident',
             ]);
