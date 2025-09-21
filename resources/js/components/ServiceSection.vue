@@ -1,19 +1,30 @@
 <script setup>
-import { animate, inView, spring, stagger } from 'motion'
-import { onMounted } from 'vue'
-import { Link } from '@inertiajs/vue3'
+import { animate, inView } from 'motion'
+import { onMounted, ref } from 'vue'
+import { usePage, router } from '@inertiajs/vue3'
+import RegisterModal from './RegisterModal.vue'
+
+const page = usePage()
+const showRegisterModal = ref(false)
+
 const services = [
     { route: 'barangay-clearance', name: 'Barangay Clearance' },
-    { route: 'working-clearance', name: ' Barangay Working Clearance' },
+    { route: 'working-clearance', name: 'Barangay Working Clearance' },
     { route: 'water-electrical-permit', name: 'Water & Electrical Permit' },
     { route: 'fencing-building-permit', name: 'Fencing/Building Permit' },
     { route: 'business-clearance', name: 'Business Clearance' },
     { route: 'indigency-clearance', name: 'Indigency Clearance' },
 ]
 
+const handleServiceClick = (service) => {
+    if (!page.props.auth || !page.props.auth.user) {
+        showRegisterModal.value = true
+    } else {
+        router.visit(route(service.route))
+    }
+}
 
 onMounted(() => {
-    // Animate the background container
     inView('.service-bg-animate', (el) => {
         animate(
             el,
@@ -26,7 +37,6 @@ onMounted(() => {
         }
     })
 
-    // Animate the content as before
     inView('.service-sect', (el) => {
         animate(
             el,
@@ -61,17 +71,20 @@ onMounted(() => {
                     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 select-none">
                     <li v-for="service in services" :key="service.route" draggable="false"
                         class="service-card bg-gradient-to-br from-green-100 via-white to-[#b6e89c] h-full shadow-xl rounded-xl overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl border-2 border-green-300">
-                        <Link :href="route(service.route)" class="block p-4 sm:p-6 md:p-8">
-                        <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-green-700 mb-2">
-                            {{ service.name }}
-                        </h2>
-                        <p class="text-green-900 text-sm sm:text-base">
-                            Learn more about our {{ service.name.toLowerCase() }} services.
-                        </p>
-                        </Link>
+                        <button type="button"
+                            class="block w-full text-left p-4 sm:p-6 md:p-8 bg-transparent border-none outline-none"
+                            @click="handleServiceClick(service)">
+                            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-green-700 mb-2">
+                                {{ service.name }}
+                            </h2>
+                            <p class="text-green-900 text-sm sm:text-base">
+                                Learn more about our {{ service.name.toLowerCase() }} services.
+                            </p>
+                        </button>
                     </li>
                 </ul>
             </div>
         </div>
+        <RegisterModal :show="showRegisterModal" @close="showRegisterModal = false" />
     </div>
 </template>

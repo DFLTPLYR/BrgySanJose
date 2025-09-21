@@ -1,4 +1,3 @@
-
 <script setup>
 import Layout from '@/layouts/Layout.vue';
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
@@ -249,35 +248,27 @@ const formatClearanceType = (type) => {
                                 }) : 'N/A' }}
                             </td>
                             <td class="px-6 py-4 relative" data-dropdown>
-                                <template v-if="['pending', 'approved', 'rejected'].includes(clearance.status.toLowerCase())">
-                                    <div
-                                        @click.stop="toggleDropdown(clearance.id)"
-                                        :class="{
-                                            'cursor-pointer inline-block px-2 py-1 rounded text-xs font-bold transition': true,
-                                            'bg-yellow-100 text-yellow-700 hover:bg-yellow-200': clearance.status.toLowerCase() === 'pending',
-                                            'bg-green-100 text-green-700 hover:bg-green-200': clearance.status.toLowerCase() === 'approved',
-                                            'bg-red-100 text-red-700 hover:bg-red-200': clearance.status.toLowerCase() === 'rejected'
-                                        }"
-                                    >
+                                <template
+                                    v-if="['pending', 'approved', 'rejected'].includes(clearance.status.toLowerCase())">
+                                    <div @click.stop="toggleDropdown(clearance.id)" :class="{
+                                        'cursor-pointer inline-block px-2 py-1 rounded text-xs font-bold transition': true,
+                                        'bg-yellow-100 text-yellow-700 hover:bg-yellow-200': clearance.status.toLowerCase() === 'pending',
+                                        'bg-green-100 text-green-700 hover:bg-green-200': clearance.status.toLowerCase() === 'approved',
+                                        'bg-red-100 text-red-700 hover:bg-red-200': clearance.status.toLowerCase() === 'rejected'
+                                    }">
                                         {{ capitalize(clearance.status) }}
                                     </div>
-                                    <div
-                                        v-if="activeDropdown === clearance.id"
+                                    <div v-if="activeDropdown === clearance.id"
                                         class="absolute mt-2 bg-white border rounded shadow z-20 px-4 py-2 flex gap-2"
-                                        style="left: 50%; transform: translateX(-50%);"
-                                    >
-                                        <button
-                                            @click.stop="updateStatus(clearance.id, 'approved')"
+                                        style="left: 50%; transform: translateX(-50%);">
+                                        <button @click.stop="updateStatus(clearance.id, 'approved')"
                                             class="px-2 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition"
-                                            :class="{ 'opacity-50': clearance.status.toLowerCase() === 'approved' }"
-                                        >
+                                            :class="{ 'opacity-50': clearance.status.toLowerCase() === 'approved' }">
                                             Approve
                                         </button>
-                                        <button
-                                            @click.stop="updateStatus(clearance.id, 'rejected')"
+                                        <button @click.stop="updateStatus(clearance.id, 'rejected')"
                                             class="px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition"
-                                            :class="{ 'opacity-50': clearance.status.toLowerCase() === 'rejected' }"
-                                        >
+                                            :class="{ 'opacity-50': clearance.status.toLowerCase() === 'rejected' }">
                                             Decline
                                         </button>
                                     </div>
@@ -291,10 +282,9 @@ const formatClearanceType = (type) => {
                             <td class="px-6 py-4 space-x-2">
                                 <Link :href="getEditLink(clearance)"
                                     class="inline-block px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                                    Edit
+                                Edit
                                 </Link>
-                                <button @click="showModal(clearance.id)"
-                                    :disabled="deletingId === clearance.id"
+                                <button @click="showModal(clearance.id)" :disabled="deletingId === clearance.id"
                                     class="inline-block px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition disabled:opacity-50"
                                     v-if="['Admin', 'SuperAdmin'].includes(page.props.auth.role)">
                                     Delete
@@ -311,4 +301,3 @@ const formatClearanceType = (type) => {
         </div>
     </Layout>
 </template>
-
