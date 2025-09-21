@@ -1,4 +1,3 @@
-
 <script setup>
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link } from '@inertiajs/vue3';
@@ -44,28 +43,33 @@ const goToSection = (elementId) => {
 
 
 onMounted(() => {
-  const hash = window.location.hash?.substring(1)
-  if (hash) {
-    // wait for DOM to load
-    setTimeout(() => {
-      const el = document.getElementById(hash)
-      const headerOffset = document.querySelector('header')?.offsetHeight || 0
-      if (el) {
-        const elementPosition = el.getBoundingClientRect().top + window.pageYOffset
-        const offsetPosition = elementPosition - headerOffset - 20
+    const hash = window.location.hash?.substring(1)
+    if (hash) {
+        // wait for DOM to load
+        setTimeout(() => {
+            const el = document.getElementById(hash)
+            const headerOffset = document.querySelector('header')?.offsetHeight || 0
+            if (el) {
+                const elementPosition = el.getBoundingClientRect().top + window.pageYOffset
+                const offsetPosition = elementPosition - headerOffset - 20
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth',
-        })
-      }
-    }, 300) // delay so Inertia page fully mounts
-  }
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth',
+                })
+            }
+        }, 300) // delay so Inertia page fully mounts
+    }
 })
 </script>
 
 <template>
+    <div>
+        <!-- Your homepage content here -->
+        <ResidentLoginModal :show="showLoginModal" @close="showLoginModal = false" />
+    </div>
     <Layout>
+
         <Head>
             <title>Barangay San Jose, Tagaytay City</title>
             <meta name="description" content="Official website of Barangay San Jose, Tagaytay City." />
@@ -104,7 +108,7 @@ onMounted(() => {
                             </a>
                             <Link :href="route('login')"
                                 class="bg-white hover:bg-gray-100 text-green-700 px-6 sm:px-8 py-3 text-base sm:text-lg font-bold rounded-lg shadow border border-green-600 transition-colors duration-300">
-                                Official Login
+                            Official Login
                             </Link>
                         </div>
                     </div>
@@ -139,11 +143,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
     transition: opacity 0.5s ease;
 }
-.fade-enter-from, .fade-leave-to {
+
+.fade-enter-from,
+.fade-leave-to {
     opacity: 0;
 }
 </style>
-

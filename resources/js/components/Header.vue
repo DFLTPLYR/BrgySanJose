@@ -1,15 +1,16 @@
-
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import Swal from 'sweetalert2'
 import { Link, router, usePage } from '@inertiajs/vue3';
+import ResidentLoginModal from '@/components/ResidentLoginModal.vue'
 
 defineProps({
     isHome: Boolean
 });
 
-const { props } = usePage();
+const page = usePage();
 const mobileMenu = ref(false);
+const showLoginModal = ref(false);
 
 const scrollToTop = () => {
     if (typeof window !== 'undefined') {
@@ -46,6 +47,10 @@ function signOut() {
         })
     });
 }
+
+const openLogin = () => {
+    showLoginModal.value = true;
+};
 </script>
 
 <template>
@@ -59,7 +64,7 @@ function signOut() {
                         class="h-14 w-14 rounded-full border-2 border-green-600 shadow bg-white p-1" />
                     <Link :href="route('home')"
                         class="hidden lg:block text-2xl font-extrabold text-green-800 drop-shadow-lg tracking-wide bg-white/80 px-4 py-2 rounded-lg">
-                        Barangay San Jose Tagaytay City
+                    Barangay San Jose Tagaytay City
                     </Link>
                 </div>
 
@@ -71,7 +76,7 @@ function signOut() {
                     </button>
                     <Link v-else :href="route('home')"
                         class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow">
-                        Home
+                    Home
                     </Link>
 
                     <template v-if="isHome">
@@ -95,27 +100,33 @@ function signOut() {
                     <template v-else>
                         <Link :href="route('home') + '#services'"
                             class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow">
-                            Services
+                        Services
                         </Link>
                         <Link :href="route('home') + '#about'"
                             class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow">
-                            About
+                        About
                         </Link>
                         <Link :href="route('home') + '#news-events'"
                             class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow">
-                            News & Events
+                        News & Events
                         </Link>
                         <Link :href="route('home') + '#contact'"
                             class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow">
-                            Contact
+                        Contact
                         </Link>
                     </template>
 
+                    <!-- Show Login button if not logged in -->
+                    <button v-if="!page.props.auth || !page.props.auth.user" @click="openLogin"
+                        class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition font-bold shadow">
+                        Login
+                    </button>
+
                     <!-- Dropdown for Authenticated Users -->
-                    <div class="relative group" v-if="props.auth">
+                    <div class="relative group" v-else>
                         <button
                             class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow flex items-center">
-                            {{ props.auth.username }}
+                            {{ page.props.auth.user?.username || page.props.auth.user?.name || 'User' }}
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7" />
@@ -126,7 +137,7 @@ function signOut() {
                             <div class="py-1">
                                 <Link :href="route('dashboard')"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Dashboard
+                                Dashboard
                                 </Link>
                                 <div class="border-t my-1"></div>
                                 <button @click="signOut"
@@ -162,7 +173,7 @@ function signOut() {
                         </button>
                         <Link v-else :href="route('home')" @click="mobileMenu = false"
                             class="w-11/12 text-left text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow">
-                            Home
+                        Home
                         </Link>
 
                         <template v-if="isHome">
@@ -186,25 +197,34 @@ function signOut() {
                         <template v-else>
                             <Link :href="route('home') + '#services'" @click="mobileMenu = false"
                                 class="w-11/12 text-left text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow">
-                                Services
+                            Services
                             </Link>
                             <Link :href="route('home') + '#about'" @click="mobileMenu = false"
                                 class="w-11/12 text-left text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow">
-                                About
+                            About
                             </Link>
                             <Link :href="route('home') + '#news-events'" @click="mobileMenu = false"
                                 class="w-11/12 text-left text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow">
-                                News & Events
+                            News & Events
                             </Link>
                             <Link :href="route('home') + '#contact'" @click="mobileMenu = false"
                                 class="w-11/12 text-left text-green-50 hover:bg-green-600 hover:text-white px-4 py-3 rounded-lg text-lg font-bold shadow">
-                                Contact
+                            Contact
                             </Link>
                         </template>
+
+                        <!-- Mobile Login Button -->
+                        <button v-if="!page.props.auth || !page.props.auth.user" @click="openLogin; mobileMenu = false"
+                            class="w-11/12 text-left px-4 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition text-lg font-bold shadow">
+                            Login
+                        </button>
                     </div>
                 </div>
             </transition>
         </nav>
-    </header>
-</template>
 
+    </header>
+    <!-- Resident Login Modal -->
+    <ResidentLoginModal :show="showLoginModal" @close="showLoginModal = false" />
+    
+</template>

@@ -2,6 +2,7 @@
 import Layout from '@/layouts/Layout.vue'
 import { ref } from 'vue'
 import { router } from '@inertiajs/vue3'
+import Swal from 'sweetalert2'
 
 const form = ref({
     name: '',
@@ -16,6 +17,19 @@ const submit = () => {
     router.post(route('register.store'), form.value, {
         onError: (e) => {
             errors.value = e
+        },
+        onSuccess: () => {
+            // Show success message and redirect to homepage
+            Swal.fire({
+                title: 'Registration Successful!',
+                text: 'Your registration has been submitted. Please wait for admin approval.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#22c55e'
+            }).then(() => {
+                // Redirect to homepage after closing the alert
+                router.visit(route('home'))
+            })
         }
     })
 }

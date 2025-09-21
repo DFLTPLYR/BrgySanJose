@@ -56,6 +56,23 @@ class AuthenticatedSessionController extends Controller
         // Redirect to dashboard or intended page
         return redirect()->intended('/');
     }
+    public function residentCreate()
+    {
+        return inertia('ResidentLogin');
+    }
+
+    public function residentStore(Request $request)
+    {
+        // You can use the same logic as your admin store, or customize as needed
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended('/'); // or wherever you want residents to go
+        }
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
 
     /**
      * Handle an incoming authentication request.

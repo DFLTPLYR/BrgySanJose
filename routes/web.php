@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use App\Http\Controllers\ClearanceController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -25,6 +26,23 @@ Route::get('/about-us', function () {
 Route::get('/register', function () {
     return Inertia::render('Register');
 })->name('register');
+
+// Add this before the require statements
+Route::post('/resident/login', function (Request $request) {
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+    ]);
+
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+        return redirect()->intended('/');
+    }
+
+    return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+    ]);
+})->name('resident.login.store');
 
 // Your existing POST route for processing registration
 Route::post('/register', function (Request $request) {
@@ -44,17 +62,17 @@ Route::post('/register', function (Request $request) {
         $counter++;
     }
 
-    $userData = [
+    $user = User::create([
         'name' => $validated['name'],
         'username' => $username,
         'email' => $validated['email'],
         'password' => Hash::make($validated['password']),
         'status' => 'pending',
-    ];
+    ]);
+    // Auto-login the user after registration
+    Auth::login($user);
 
-    $user = User::create($userData);
-
-    return redirect()->route('login')->with('success', 'Registration submitted! Wait for admin approval.');
+    return redirect()->route('home')->with('success', 'Registration successful!');
 })->name('register.store');
 
 Route::put('/user/{user}/status', function (Request $request, User $user) {
