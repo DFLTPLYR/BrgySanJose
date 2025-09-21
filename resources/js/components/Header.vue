@@ -117,7 +117,7 @@ const openLogin = () => {
                     </template>
 
                     <!-- Show Login button if not logged in -->
-                    <button v-if="!page.props.auth || !page.props.auth.user" @click="openLogin"
+                    <button v-if="!page.props.auth" @click="openLogin"
                         class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition font-bold shadow">
                         Login
                     </button>
@@ -126,7 +126,7 @@ const openLogin = () => {
                     <div class="relative group" v-else>
                         <button
                             class="text-green-50 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg text-lg font-bold shadow flex items-center">
-                            {{ page.props.auth.user?.username || page.props.auth.user?.name || 'User' }}
+                            {{ page.props.auth?.user?.name || 'User' }}
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M19 9l-7 7-7-7" />
@@ -214,7 +214,7 @@ const openLogin = () => {
                         </template>
 
                         <!-- Mobile Login Button -->
-                        <button v-if="!page.props.auth || !page.props.auth.user" @click="openLogin; mobileMenu = false"
+                        <button v-if="!page.props.auth" @click="openLogin; mobileMenu = false"
                             class="w-11/12 text-left px-4 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition text-lg font-bold shadow">
                             Login
                         </button>
@@ -226,5 +226,5 @@ const openLogin = () => {
     </header>
     <!-- Resident Login Modal -->
     <ResidentLoginModal :show="showLoginModal" @close="showLoginModal = false" />
-    
+
 </template>

@@ -17,7 +17,7 @@ const services = [
 ]
 
 const handleServiceClick = (service) => {
-    if (!page.props.auth || !page.props.auth.user) {
+    if (!page.props.auth) {
         showRegisterModal.value = true
     } else {
         router.visit(route(service.route))

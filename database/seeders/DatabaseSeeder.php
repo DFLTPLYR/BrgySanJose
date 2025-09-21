@@ -15,31 +15,31 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Official User',              // Add this
+            'name' => 'Official User',
             'username' => 'Official',
-            'email' => 'official@example.com',      // Add this
+            'email' => 'official@example.com',
             'password' => Hash::make('password123'),
-            'status' => 'approved',                 // Add this (since officials should be approved)
+            'status' => 'approved',
             'isVerified' => true
         ]);
 
         User::create([
-            'name' => 'Admin User',                 // Add this
+            'name' => 'Admin User',
             'username' => 'Admin',
-            'email' => 'admin@example.com',         // Add this
+            'email' => 'admin@example.com',
             'password' => Hash::make('password123'),
             'role' => 'Admin',
-            'status' => 'approved',                 // Add this
+            'status' => 'approved',
             'isVerified' => true,
         ]);
 
         User::create([
-            'name' => 'Super Admin',                // Add this
+            'name' => 'Super Admin',
             'username' => 'SuperAdmin',
-            'email' => 'superadmin@example.com',    // Add this
+            'email' => 'superadmin@example.com',
             'password' => Hash::make('password123'),
             'role' => 'SuperAdmin',
-            'status' => 'approved',                 // Add this
+            'status' => 'approved',
             'isVerified' => true
         ]);
     }

@@ -1,9 +1,8 @@
 <script setup>
 import Layout from '@/layouts/Layout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { ref, onMounted, defineAsyncComponent } from 'vue';
 import { animate, inView } from 'motion';
-
 // Lazy-loaded components
 const ServiceSection = defineAsyncComponent(() => import('@/components/ServiceSection.vue'));
 const About = defineAsyncComponent(() => import('@/components/About.vue'));
@@ -38,9 +37,6 @@ const goToSection = (elementId) => {
         window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
     }
 };
-
-
-
 
 onMounted(() => {
     const hash = window.location.hash?.substring(1)
